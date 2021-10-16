@@ -4,18 +4,18 @@
   "description": "Unofficial Trakteer Streaming API (Using websocket)",
   "main": "dist/src/index.js",
   "directories": {
-    "test": "test"
+    "test": "dist/test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tsc | node ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BbayuGt/Trakteer.js.git"
   },
   "keywords": ["trakteer", "api", "automation", "javascript", "typescript", "websocket", "bot"],
-  "author": "",
-  "license": "ISC",
+  "author": "BbayuGt",
+  "license": "Do No Harm",
   "bugs": {
     "url": "https://github.com/BbayuGt/Trakteer.js/issues"
   },
