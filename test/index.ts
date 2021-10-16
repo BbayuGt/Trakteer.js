@@ -1,6 +1,6 @@
 import { Client } from "../src";
 
-const client = new Client("BbayuGt", "trstream-vRDTSMjON5m8Sbj5rHiP")
+const client = new Client("Username", "Stream key")
 client.start()
 
 client.onOpen(()=> {
