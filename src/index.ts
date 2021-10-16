@@ -15,8 +15,8 @@ export class Client {
     streamKey:`trstream-${string}`
     userId:string | undefined
 
-    constructor(username:string, streamKey:`trstream-${string}`) {
-        this.username = username
+    constructor(pageID:string, streamKey:`trstream-${string}`) {
+        this.username = pageID
         this.streamKey = streamKey
     }
 
