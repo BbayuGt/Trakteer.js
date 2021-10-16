@@ -7,7 +7,7 @@ Unofficial Trakteer Streaming API (Using websocket)
 Javascript
 ```js
 const trakteer = require("trakteerjs")
-const client = new trakteer.Client("Username", "Stream APIKEY") //Initialize trakteer client
+const client = new trakteer.Client("PageID", "Stream APIKEY") //Initialize trakteer client
 
 client.start() //Start client.
 
