@@ -1,5 +1,5 @@
 {
-  "name": "trakteer",
+  "name": "trakteerjs",
   "version": "1.0.0",
   "description": "Unofficial Trakteer Streaming API (Using websocket)",
   "main": "index.js",
