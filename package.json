@@ -1,0 +1,30 @@
+{
+  "name": "trakteer",
+  "version": "1.0.0",
+  "description": "Unofficial Trakteer Streaming API (Using websocket)",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BbayuGt/Trakteer.js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BbayuGt/Trakteer.js/issues"
+  },
+  "homepage": "https://github.com/BbayuGt/Trakteer.js#readme",
+  "dependencies": {
+    "axios": "^0.23.0",
+    "ws": "^8.2.3"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.2.0"
+  }
+}
