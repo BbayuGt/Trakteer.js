@@ -4,18 +4,19 @@ Unofficial Trakteer Streaming API (Using websocket)
 # This API is still in development. some bug might found
 
 # Usage
-Javascript
+
+Using this API is very simple. just need a few line and you're ready to go!
 ```js
 const trakteer = require("trakteerjs")
 const client = new trakteer.Client("PageID", "Stream APIKEY") //Initialize trakteer client
 
 client.start() //Start client.
 
-client.onOpen(()=> {
+client.on("connect", ()=> {
     console.log("Connected!") // Triggered When connected
 })
 
-client.onDonation((donation)=> {
+client.on("donation", (donation)=> {
     console.log(donation)
     // Output :
     /*
