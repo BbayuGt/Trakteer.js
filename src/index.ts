@@ -75,30 +75,6 @@ export class Client extends EventEmitter {
         }))
     }
 
-
-    on2(event:"donation" | "open", cb:CallableFunction) {
-        switch(event) {
-            case "donation":
-                {
-                    client.on("message", (message)=> {
-                        if (message.toString().startsWith(`{"channel"`)) {
-                            cb(JSON.parse(JSON.parse(message.toString()).data))
-                        }
-                    })
-                }
-                break
-
-            case "open":
-                {
-                    client.on("open", () => {
-                        cb(true)
-                        return
-                    })
-                }
-                break
-        }
-    }
-
     /**
      * 
      * @param cb This will triggered when The client is ready.
