@@ -90,7 +90,7 @@ export class Client extends EventEmitter {
         let [currentGoal, targetGoal]:number[] = data.targetValue
             .replace(/\./g, "")
             .split("/")
-            .map((x:string)=>parseInt(x.replace("Rp ", "")))
+            .map((x:string)=>parseFloat(x.replace("Rp ", "")))
             // A bit long, lul. short this please loll
             // 'Rp 0 / Rp 75.000' <~ This should be the original text.
 
