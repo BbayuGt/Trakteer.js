@@ -7,13 +7,21 @@
     "test": "dist/test"
   },
   "scripts": {
-    "test": "tsc | node ."
+    "test": "ts-node dist/test/"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BbayuGt/Trakteer.js.git"
   },
-  "keywords": ["trakteer", "api", "automation", "javascript", "typescript", "websocket", "bot"],
+  "keywords": [
+    "trakteer",
+    "api",
+    "automation",
+    "javascript",
+    "typescript",
+    "websocket",
+    "bot"
+  ],
   "author": "BbayuGt",
   "license": "Do No Harm",
   "bugs": {
@@ -25,6 +33,7 @@
     "ws": "^8.2.3"
   },
   "devDependencies": {
-    "@types/ws": "^8.2.0"
+    "@types/ws": "^8.2.0",
+    "ts-node": "^10.3.0"
   }
 }
