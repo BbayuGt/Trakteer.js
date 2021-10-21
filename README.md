@@ -34,4 +34,16 @@ client.on("donation", (donation)=> {
         }
     */
 })
+
+client.getGoal().then(goal=>{
+    console.log(goal)
+    /*
+        {
+            target: { current: 69000, target: 420000, progress: 69.420 },
+            title: 'Goal Title',
+            url: 'trakteer.id/YourPageID'
+        }
+    */
+})
+
 ```

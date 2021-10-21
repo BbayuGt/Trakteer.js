@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from "axios";
-import {EventEmitter, WebSocket} from "ws"
+import {EventEmitter, RawData, WebSocket} from "ws"
+import { Goal } from "./interfaces";
 
-const client = new WebSocket("wss://socket.trakteer.id/app/2ae25d102cc6cd41100a?protocol=7&client=js&version=5.1.1&flash=false")
+const client = new WebSocket("wss://socket.trakteer.id/app/2ae25d102cc6cd41100a?protocol=7&client=js&version=5.1.1&flash=false", )
 
 setInterval(()=>{
     client.send(JSON.stringify({
@@ -23,6 +24,7 @@ export class Client extends EventEmitter {
     username:string
     streamKey:`trstream-${string}`
     userId:string | undefined
+    private messages:RawData[] = []
 
     /**
      * Client Class
@@ -34,7 +36,7 @@ export class Client extends EventEmitter {
         this.username = pageID
         this.streamKey = streamKey
 
-        client.on("open", () => {
+        client.once("open", () => {
             this.emit("connect")
         })
 
@@ -56,23 +58,48 @@ export class Client extends EventEmitter {
         
         this.userId = result![1]
 
-        //Subscribe ke Streaming agar mendapatkan feedback
-        client.send(JSON.stringify({
-            event: "pusher:subscribe",
-            data:{
-                auth: "",
-                channel: `creator-stream.${this.userId}.${this.streamKey}`
-            }
-        }))
+        client.once("open", () => { //Fix WebSocket.send error at startup
 
-        //Subscribe ke Streaming test agar mendapatkan feedback
-        client.send(JSON.stringify({
-            event: "pusher:subscribe",
-            data:{
-                auth: "",
-                channel: `creator-stream-test.${this.userId}.${this.streamKey}`
-            }
-        }))
+            //Subscribe ke Streaming agar mendapatkan feedback
+            client.send(JSON.stringify({
+                event: "pusher:subscribe",
+                data:{
+                    auth: "",
+                    channel: `creator-stream.${this.userId}.${this.streamKey}`
+                }
+            }))
+    
+            //Subscribe ke Streaming test agar mendapatkan feedback
+            client.send(JSON.stringify({
+                event: "pusher:subscribe",
+                data:{
+                    auth: "",
+                    channel: `creator-stream-test.${this.userId}.${this.streamKey}`
+                }
+            }))
+
+        })
+    }
+
+
+    async getGoal():Promise<Goal> {
+        const data = (await axios.get<any>(`https://api.trakteer.id/v2/stream/${this.streamKey}/target-data`)).data
+        let [currentGoal, targetGoal]:number[] = data.targetValue
+            .replace(/\./g, "")
+            .split("/")
+            .map((x:string)=>parseInt(x.replace("Rp ", "")))
+            // A bit long, lul. short this please loll
+            // 'Rp 0 / Rp 75.000' <~ This should be the original text.
+
+        return {
+            target:{
+                current:currentGoal,
+                target:targetGoal,
+                progress:parseInt(data.targetProgress)
+            },
+            title:data.targetTitle,
+            url:data.pageUrl
+        }
     }
 
     /**
