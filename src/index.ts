@@ -57,6 +57,9 @@ export class Client extends EventEmitter {
         const result = (/creator-stream\.(.*?)\./gi.exec(userid))
         
         this.userId = result![1]
+        if (!result![1]) {
+            throw new Error("Failed to read userId data! Invalid key/username?")
+        }
 
         client.once("open", () => { //Fix WebSocket.send error at startup
 
