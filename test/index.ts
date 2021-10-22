@@ -1,7 +1,6 @@
 import { Client } from "../src";
 
-const client = new Client("Ganyu", "trstream-xxx") //Cek page id di : https://trakteer.id/manage/my-page/settings
-client.start()
+const client = new Client("PageID", "trstream-xxx") //Cek page id di : https://trakteer.id/manage/my-page/settings
 
 client.on("connect", ()=> {
     console.log("connected")

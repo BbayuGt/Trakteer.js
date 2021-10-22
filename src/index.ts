@@ -36,8 +36,35 @@ export class Client extends EventEmitter {
         this.username = pageID
         this.streamKey = streamKey
 
+        // It will connect automatically. instead of calling this.start(). start will be useless now
         client.once("open", () => {
-            this.emit("connect")
+            axios.get(`https://trakteer.id/${this.username}/stream?key=${this.streamKey}`).then((data)=> {
+                const userid:any = data.data
+                const result = (/creator-stream\.(.*?)\./gi.exec(userid))
+                
+                if (!data.data || !result || !result![1]) throw new Error("Failed to read userId data! Invalid key/username?")
+                else this.userId = result![1]
+
+                //Subscribe ke Streaming agar mendapatkan feedback
+                client.send(JSON.stringify({
+                    event: "pusher:subscribe",
+                    data:{
+                        auth: "",
+                        channel: `creator-stream.${this.userId}.${this.streamKey}`
+                    }
+                }))
+        
+                //Subscribe ke Streaming test agar mendapatkan feedback
+                client.send(JSON.stringify({
+                    event: "pusher:subscribe",
+                    data:{
+                        auth: "",
+                        channel: `creator-stream-test.${this.userId}.${this.streamKey}`
+                    }
+                }))
+
+                this.emit("connect")
+            })
         })
 
         client.on("message", (message)=>{
@@ -45,48 +72,21 @@ export class Client extends EventEmitter {
                 this.emit("donation", JSON.parse(JSON.parse(message.toString()).data))
             }
         })
-
     }
 
+
     /**
-     * please use this before using any code. to initialize the client
+     * @deprecated this will do nothing. will remove it in later version. please remove this line
+     * 
      */
     async start() {
-        const data = (await axios.get(`https://trakteer.id/${this.username}/stream?key=${this.streamKey}`))
-        const userid:any = data.data
-        const result = (/creator-stream\.(.*?)\./gi.exec(userid))
         
-        this.userId = result![1]
-        if (!result![1]) {
-            throw new Error("Failed to read userId data! Invalid key/username?")
-        }
-
-        client.once("open", () => { //Fix WebSocket.send error at startup
-
-            //Subscribe ke Streaming agar mendapatkan feedback
-            client.send(JSON.stringify({
-                event: "pusher:subscribe",
-                data:{
-                    auth: "",
-                    channel: `creator-stream.${this.userId}.${this.streamKey}`
-                }
-            }))
-    
-            //Subscribe ke Streaming test agar mendapatkan feedback
-            client.send(JSON.stringify({
-                event: "pusher:subscribe",
-                data:{
-                    auth: "",
-                    channel: `creator-stream-test.${this.userId}.${this.streamKey}`
-                }
-            }))
-
-        })
     }
 
 
     async getGoal():Promise<Goal> {
         const data = (await axios.get<any>(`https://api.trakteer.id/v2/stream/${this.streamKey}/target-data`)).data
+        
         let [currentGoal, targetGoal]:number[] = data.targetValue
             .replace(/\./g, "")
             .split("/")
@@ -108,7 +108,7 @@ export class Client extends EventEmitter {
     /**
      * 
      * @param cb This will triggered when The client is ready.
-     * @deprecated This will removed on first beta, please use `client.on("open")` instead.
+     * @deprecated This will removed on later version, please use `client.on("open")` instead.
      */
     onOpen(cb:CallableFunction) {
         client.on("open", () => {
@@ -120,7 +120,7 @@ export class Client extends EventEmitter {
     /**
      * 
      * @param cb This will triggered when donation is detected
-     * @deprecated This will removed on first beta, please use `client.on("donation")` instead.
+     * @deprecated This will removed on later version, please use `client.on("donation")` instead.
      */
     onDonation(cb:CallableFunction) {
         client.on("message", (message)=> {
