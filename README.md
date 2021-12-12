@@ -7,6 +7,9 @@ Using this API is very simple. just need a few line and you're ready to go!
 ```js
 const trakteer = require("trakteerjs")
 const client = new Client("PageID", "trstream-xxx") //Cek page id di : https://trakteer.id/manage/my-page/settings
+// Or use Proxy!
+const clientProxy = new Client("PageID", "trstream-xxx", "https://proxy.com:1234/")
+
 
 client.on("connect", ()=> {
     console.log("connected")

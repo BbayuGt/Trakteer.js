@@ -1,15 +1,7 @@
 import axios, { AxiosResponse } from "axios";
+import createHttpsProxyAgent, { HttpsProxyAgent } from "https-proxy-agent";
 import {EventEmitter, RawData, WebSocket} from "ws"
 import { Goal, leaderboard } from "./interfaces";
-
-const client = new WebSocket("wss://socket.trakteer.id/app/2ae25d102cc6cd41100a?protocol=7&client=js&version=5.1.1&flash=false", )
-
-setInterval(()=>{
-    client.send(JSON.stringify({
-        data: {},
-        event: "pusher:ping"
-    }))
-}, 5000)
 
 interface ClientEvents {
     'donation': (event:string, donation:Function) => void
@@ -24,6 +16,8 @@ export class Client extends EventEmitter {
     username:string
     streamKey:`trstream-${string}`
     userId:string | undefined
+    client:WebSocket
+    agent: HttpsProxyAgent | undefined
     private messages:RawData[] = []
 
     /**
@@ -31,14 +25,22 @@ export class Client extends EventEmitter {
      * @param pageID should be the trakteer page id (NOT Username). check pageID in https://trakteer.id/manage/my-page/settings
      * @param streamKey should be `trstream-xxx`. check key in https://trakteer.id/manage/stream-settings
      */
-    constructor(pageID:string, streamKey:`trstream-${string}`) {
+    constructor(pageID:string, streamKey:`trstream-${string}`, proxy?:string | createHttpsProxyAgent.HttpsProxyAgentOptions) {
         super();
         this.username = pageID
         this.streamKey = streamKey
 
+        this.agent = !!proxy ? new HttpsProxyAgent(proxy) : undefined
+        this.client = new WebSocket("wss://socket.trakteer.id/app/2ae25d102cc6cd41100a?protocol=7&client=js&version=5.1.1&flash=false", {
+            agent:this.agent
+        })
+        
+
         // It will connect automatically. instead of calling this.start(). start will be useless now
-        client.once("open", () => {
-            axios.get(`https://trakteer.id/${this.username}/stream?key=${this.streamKey}`).then((data)=> {
+        this.client.once("open", () => {
+            axios.get(`https://trakteer.id/${this.username}/stream?key=${this.streamKey}`, {
+                httpsAgent:this.agent
+            }).then((data)=> {
                 const userid:any = data.data
                 const result = (/creator-stream\.(.*?)\./gi.exec(userid))
                 
@@ -46,16 +48,24 @@ export class Client extends EventEmitter {
                 else this.userId = result![1]
 
                 //Subscribe ke Streaming agar mendapatkan feedback
-                client.send(JSON.stringify({
+                this.client.send(JSON.stringify({
                     event: "pusher:subscribe",
                     data:{
                         auth: "",
                         channel: `creator-stream.${this.userId}.${this.streamKey}`
                     }
                 }))
+
+                // Kirim ping agar tidak di disconnect
+                setInterval(()=>{
+                    this.client.send(JSON.stringify({
+                        data: {},
+                        event: "pusher:ping"
+                    }))
+                }, 5000)
         
                 //Subscribe ke Streaming test agar mendapatkan feedback
-                client.send(JSON.stringify({
+                this.client.send(JSON.stringify({
                     event: "pusher:subscribe",
                     data:{
                         auth: "",
@@ -67,7 +77,7 @@ export class Client extends EventEmitter {
             })
         })
 
-        client.on("message", (message)=>{
+        this.client.on("message", (message)=>{
             if (message.toString().startsWith(`{"channel"`)) {
                 this.emit("donation", JSON.parse(JSON.parse(message.toString()).data))
             }
@@ -86,7 +96,9 @@ export class Client extends EventEmitter {
 
     
     async getLeaderboard(dayInterval:number=7, maxAmount:number=10, sortBy:"nominal" | "unit"="unit"):Promise<leaderboard> {
-        const data = (await axios.get<any>(`https://api.trakteer.id/v2/stream/${this.streamKey}/top-supporters?interval=${dayInterval}&count=${maxAmount}&sortby=${sortBy}`)).data as leaderboard
+        const data = (await axios.get<any>(`https://api.trakteer.id/v2/stream/${this.streamKey}/top-supporters?interval=${dayInterval}&count=${maxAmount}&sortby=${sortBy}`, {
+            httpsAgent:this.agent
+        })).data as leaderboard
         
         data.unitIcon = (/"(.+?)"/gm.exec(data.unitIcon as string) as any)[1]
         data.supporter = data.supporter.map(x=>{
@@ -98,7 +110,9 @@ export class Client extends EventEmitter {
 
 
     async getGoal():Promise<Goal> {
-        const data = (await axios.get<any>(`https://api.trakteer.id/v2/stream/${this.streamKey}/target-data`)).data
+        const data = (await axios.get<any>(`https://api.trakteer.id/v2/stream/${this.streamKey}/target-data`, {
+            httpsAgent:this.agent
+        })).data
         
         let [currentGoal, targetGoal]:number[] = data.targetValue
             .replace(/\./g, "")
@@ -124,7 +138,7 @@ export class Client extends EventEmitter {
      * @deprecated This will removed on later version, please use `client.on("open")` instead.
      */
     onOpen(cb:CallableFunction) {
-        client.on("open", () => {
+        this.client.on("open", () => {
             cb(true)
             return
         })
@@ -136,7 +150,7 @@ export class Client extends EventEmitter {
      * @deprecated This will removed on later version, please use `client.on("donation")` instead.
      */
     onDonation(cb:CallableFunction) {
-        client.on("message", (message)=> {
+        this.client.on("message", (message)=> {
             if (message.toString().startsWith(`{"channel"`)) {
                 cb(JSON.parse(JSON.parse(message.toString()).data))
             }
