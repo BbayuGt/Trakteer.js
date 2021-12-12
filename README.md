@@ -8,17 +8,14 @@ Unofficial Trakteer Streaming API (Using websocket)
 Using this API is very simple. just need a few line and you're ready to go!
 ```js
 const trakteer = require("trakteerjs")
-const client = new trakteer.Client("PageID", "Stream APIKEY") //Initialize trakteer client
-
-client.start() //Start client.
+const client = new Client("PageID", "trstream-xxx") //Cek page id di : https://trakteer.id/manage/my-page/settings
 
 client.on("connect", ()=> {
-    console.log("Connected!") // Triggered When connected
+    console.log("connected")
 })
 
-client.on("donation", (donation)=> {
+client.on("donation", (donation:Object)=>{
     console.log(donation)
-    // Output :
     /*
         {
             tip_id:"id",
@@ -35,8 +32,27 @@ client.on("donation", (donation)=> {
     */
 })
 
-client.getGoal().then(goal=>{
-    console.log(goal)
+client.getLeaderboard().then(result=>{
+    console.log(result)
+    /*
+    {
+        pageUrl: 'trakteer.id/PageID',
+        unitIcon: 'https://trakteer.id/storage/images/units/uic-xxx.png',
+        unitName: 'My Unit name!',
+        supporter: [
+            { supporter_name: '', avatar: null, sum: 69 },
+            {
+                supporter_name: 'BbayuGt',
+                avatar: 'https://lh3.googleusercontent.com/a-/AOh14Gi45Ig9QTQozpqkD_SgPcB190KAwStLhex1Y-CT5w=s96-c',
+                sum: 420
+            }
+        ]
+    }
+    */
+})
+
+client.getGoal().then(result=>{
+    console.log(result)
     /*
         {
             target: { current: 69000, target: 420000, progress: 69.420 },

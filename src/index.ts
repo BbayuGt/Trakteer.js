@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import {EventEmitter, RawData, WebSocket} from "ws"
-import { Goal } from "./interfaces";
+import { Goal, leaderboard } from "./interfaces";
 
 const client = new WebSocket("wss://socket.trakteer.id/app/2ae25d102cc6cd41100a?protocol=7&client=js&version=5.1.1&flash=false", )
 
@@ -81,6 +81,19 @@ export class Client extends EventEmitter {
      */
     async start() {
         
+    }
+    
+
+    
+    async getLeaderboard(dayInterval:number=7, maxAmount:number=10, sortBy:"nominal" | "unit"="unit"):Promise<leaderboard> {
+        const data = (await axios.get<any>(`https://api.trakteer.id/v2/stream/${this.streamKey}/top-supporters?interval=${dayInterval}&count=${maxAmount}&sortby=${sortBy}`)).data as leaderboard
+        
+        data.unitIcon = (/"(.+?)"/gm.exec(data.unitIcon as string) as any)[1]
+        data.supporter = data.supporter.map(x=>{
+            x.sum = parseInt(x.sum as unknown as string)
+            return x
+        }) as any
+        return data
     }
 
 
