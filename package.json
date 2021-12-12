@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/BbayuGt/Trakteer.js#readme",
   "dependencies": {
-    "axios": "^0.23.0",
+    "axios": "^0.24.0",
     "ws": "^8.2.3"
   },
   "devDependencies": {
