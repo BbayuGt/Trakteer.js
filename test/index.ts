@@ -55,3 +55,21 @@ client.getGoal().then(result=>{
         }
     */
 })
+
+client.getSupporter(2).then((result)=> {
+    console.log(result)
+    /*
+        [
+            {
+                display_name: 'Name #1',
+                support_message: 'Hello!!',
+                quantity: 12
+            },
+            {
+                display_name: 'Name #2',
+                support_message: 'Sup!',
+                quantity: 10
+            }
+        ]
+    */
+})

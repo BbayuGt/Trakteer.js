@@ -1,6 +1,6 @@
 {
   "name": "trakteerjs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Unofficial Trakteer Streaming API (Using websocket)",
   "main": "dist/src/index.js",
   "directories": {
