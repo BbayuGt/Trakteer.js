@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import createHttpsProxyAgent, { HttpsProxyAgent } from "https-proxy-agent";
 import {EventEmitter, RawData, WebSocket} from "ws"
-import { Goal, leaderboard } from "./interfaces";
+import { Goal, leaderboard, supporter } from "./interfaces";
 
 interface ClientEvents {
     'donation': (event:string, donation:Function) => void
@@ -93,8 +93,14 @@ export class Client extends EventEmitter {
         
     }
     
-
     
+    /**
+     * Get Donation Leaderboard
+     * @param dayInterval Get Donation from last x day
+     * @param maxAmount Max Amount of leadedrboard
+     * @param sortBy Sort By Rupiah amount or Unit Amount
+     * @returns Leaderboard
+     */
     async getLeaderboard(dayInterval:number=7, maxAmount:number=10, sortBy:"nominal" | "unit"="unit"):Promise<leaderboard> {
         const data = (await axios.get<any>(`https://api.trakteer.id/v2/stream/${this.streamKey}/top-supporters?interval=${dayInterval}&count=${maxAmount}&sortby=${sortBy}`, {
             httpsAgent:this.agent
@@ -109,6 +115,23 @@ export class Client extends EventEmitter {
     }
 
 
+    /**
+     * Get Supporter from all time
+     * @param amount Amount of supporter to get
+     * @returns supporter list
+     */
+    async getSupporter(amount:number=10):Promise<supporter[]> {
+        const data = (await axios.get<any>(`https://api.trakteer.id/v2/stream/${this.streamKey}/latest-tips?limit=${amount}`, {
+            httpsAgent:this.agent
+        })).data.latestTip as supporter[]
+
+        return data
+    }
+
+    /**
+     * Get Goal
+     * @returns Goal
+     */
     async getGoal():Promise<Goal> {
         const data = (await axios.get<any>(`https://api.trakteer.id/v2/stream/${this.streamKey}/target-data`, {
             httpsAgent:this.agent

@@ -13,6 +13,15 @@ export interface Goal {
     url: string
 }
 
+export interface supporter {
+    /** Display name of supporter */
+    display_name:string
+    /** Message */
+    support_message:string
+    /** Amount of unit donated */
+    quantity:string
+}
+
 export interface leaderboard {
     /**
      * Page Link
