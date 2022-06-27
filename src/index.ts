@@ -19,6 +19,7 @@ export class Client extends EventEmitter {
     client:WebSocket
     agent: HttpsProxyAgent | undefined
     private messages:RawData[] = []
+    private pingInterval:NodeJS.Timer | undefined
 
     /**
      * Client Class
@@ -57,7 +58,7 @@ export class Client extends EventEmitter {
                 }))
 
                 // Kirim ping agar tidak di disconnect
-                setInterval(()=>{
+                this.pingInterval = setInterval(()=>{
                     this.client.send(JSON.stringify({
                         data: {},
                         event: "pusher:ping"
@@ -92,7 +93,6 @@ export class Client extends EventEmitter {
     async start() {
         
     }
-    
     
     /**
      * Get Donation Leaderboard

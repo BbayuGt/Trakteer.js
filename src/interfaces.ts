@@ -17,9 +17,9 @@ export interface supporter {
     /** Display name of supporter */
     display_name:string
     /** Message */
-    support_message:string
+    support_message:string | null
     /** Amount of unit donated */
-    quantity:string
+    quantity:number
 }
 
 export interface leaderboard {
