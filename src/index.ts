@@ -4,8 +4,9 @@ import {EventEmitter, RawData, WebSocket} from "ws"
 import { Goal, leaderboard, supporter } from "./interfaces";
 
 interface ClientEvents {
-    'donation': (event:string, donation:Function) => void
-    'connect': (event:string, listener:Function) => void
+    'donation': (message:JSON) => void
+    'connect': (timestamp:Date) => void
+    'disconnect': (timestamp:Date) => void
 }
 
 export declare interface Client {
@@ -74,7 +75,7 @@ export class Client extends EventEmitter {
                     }
                 }))
 
-                this.emit("connect")
+                this.emit("connect", new Date())
             })
         })
 
@@ -82,6 +83,10 @@ export class Client extends EventEmitter {
             if (message.toString().startsWith(`{"channel"`)) {
                 this.emit("donation", JSON.parse(JSON.parse(message.toString()).data))
             }
+        })
+
+        this.client.once("close", (code, reason) => {
+            this.emit("disconnect", new Date())
         })
     }
 

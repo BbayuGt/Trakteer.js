@@ -4,11 +4,15 @@ const client = new Client("PageID", "trstream-xxx") //Cek page id di : https://t
 // Or use Proxy!
 const clientProxy = new Client("PageID", "trstream-xxx", "https://proxy.com:1234/")
 
-client.on("connect", ()=> {
-    console.log("connected")
+client.on("connect", (timestamp)=> {
+    console.log("Connected on " + timestamp)
 })
 
-client.on("donation", (donation:Object)=>{
+client.on("disconnect", (timestamp) => {
+    console.log("Disconnected on " + timestamp)
+})
+
+client.on("donation", (donation)=>{
     console.log(donation)
     /*
         {
