@@ -30,11 +30,11 @@
   "homepage": "https://github.com/BbayuGt/Trakteer.js#readme",
   "dependencies": {
     "axios": "^0.27.2",
-    "https-proxy-agent": "^5.0.0",
-    "ws": "^8.2.3"
+    "https-proxy-agent": "^5.0.1",
+    "ws": "^8.8.0"
   },
   "devDependencies": {
-    "@types/ws": "^8.2.0",
-    "ts-node": "^10.3.0"
+    "@types/ws": "^8.5.3",
+    "ts-node": "^10.8.1"
   }
 }
