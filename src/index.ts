@@ -1,11 +1,12 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import createHttpsProxyAgent, { HttpsProxyAgent } from "https-proxy-agent";
 import {EventEmitter, RawData, WebSocket} from "ws"
 import { Goal, leaderboard, supporter } from "./interfaces";
 
 interface ClientEvents {
-    'donation': (event:string, donation:Function) => void
-    'connect': (event:string, listener:Function) => void
+    'donation': (message:JSON) => void
+    'connect': (timestamp:Date) => void
+    'disconnect': (timestamp:Date) => void
 }
 
 export declare interface Client {
@@ -19,6 +20,7 @@ export class Client extends EventEmitter {
     client:WebSocket
     agent: HttpsProxyAgent | undefined
     private messages:RawData[] = []
+    private pingInterval:NodeJS.Timer | undefined
 
     /**
      * Client Class
@@ -57,7 +59,7 @@ export class Client extends EventEmitter {
                 }))
 
                 // Kirim ping agar tidak di disconnect
-                setInterval(()=>{
+                this.pingInterval = setInterval(()=>{
                     this.client.send(JSON.stringify({
                         data: {},
                         event: "pusher:ping"
@@ -73,7 +75,7 @@ export class Client extends EventEmitter {
                     }
                 }))
 
-                this.emit("connect")
+                this.emit("connect", new Date())
             })
         })
 
@@ -81,6 +83,10 @@ export class Client extends EventEmitter {
             if (message.toString().startsWith(`{"channel"`)) {
                 this.emit("donation", JSON.parse(JSON.parse(message.toString()).data))
             }
+        })
+
+        this.client.once("close", (code, reason) => {
+            this.emit("disconnect", new Date())
         })
     }
 
@@ -92,7 +98,6 @@ export class Client extends EventEmitter {
     async start() {
         
     }
-    
     
     /**
      * Get Donation Leaderboard
