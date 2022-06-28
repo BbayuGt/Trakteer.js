@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import createHttpsProxyAgent, { HttpsProxyAgent } from "https-proxy-agent";
 import {EventEmitter, RawData, WebSocket} from "ws"
 import { Goal, leaderboard, supporter } from "./interfaces";
