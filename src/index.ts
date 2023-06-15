@@ -34,7 +34,10 @@ export class Client extends EventEmitter {
 
         this.agent = !!proxy ? new HttpsProxyAgent(proxy) : undefined
         this.client = new WebSocket("wss://socket.trakteer.id/app/2ae25d102cc6cd41100a?protocol=7&client=js&version=5.1.1&flash=false", {
-            agent:this.agent
+            agent:this.agent,
+            headers:{
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+            }
         })
         
 
@@ -50,6 +53,7 @@ export class Client extends EventEmitter {
                 else this.userId = result![1]
 
                 //Subscribe ke Streaming agar mendapatkan feedback
+
                 this.client.send(JSON.stringify({
                     event: "pusher:subscribe",
                     data:{
