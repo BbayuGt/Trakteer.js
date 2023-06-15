@@ -27,7 +27,7 @@ export class Client extends EventEmitter {
      * @param pageID should be the trakteer page id (NOT Username). check pageID in https://trakteer.id/manage/my-page/settings
      * @param streamKey should be `trstream-xxx`. check key in https://trakteer.id/manage/stream-settings
      */
-    constructor(pageID:string, streamKey:`trstream-${string}`, proxy?:string | createHttpsProxyAgent.HttpsProxyAgentOptions) {
+    constructor(pageID:string, streamKey:`trstream-${string}`, proxy?:string | createHttpsProxyAgent.HttpsProxyAgentOptions, userAgent?: string) {
         super();
         this.username = pageID
         this.streamKey = streamKey
@@ -36,7 +36,7 @@ export class Client extends EventEmitter {
         this.client = new WebSocket("wss://socket.trakteer.id/app/2ae25d102cc6cd41100a?protocol=7&client=js&version=5.1.1&flash=false", {
             agent:this.agent,
             headers:{
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+                "User-Agent": userAgent ?? "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
             }
         })
         
