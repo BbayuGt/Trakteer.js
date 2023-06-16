@@ -1,3 +1,44 @@
+/**
+ * Public API Stuff
+ */
+
+export interface supportHistory {
+    status: "success" | "error",
+    status_code: number, // 200 is success, anything else is probably a error
+    error_code?: string,
+    errors?: Object
+    message: string // if success, will return "OK"
+    result: {
+        data: {
+            supporter_name: string,
+            support_message: string,
+            quantity: number, // quantity of item donated
+            amount: number, // amount (in rupiah)
+            unit_name: string, // name of the unit
+            updated_at: string // date and time when the donation given, in ISO format. e.g. '2022-07-02 09:22:05'
+        }[],
+        meta: {
+            include: Array<string> // Currently have unknown use.
+            pagination: {
+                total: number // total of donation;
+                count: number // Number of items shown;
+                per_page: number // Maximum number per page;
+                current_page: number // Current page;
+                total_page: number // Total of pages available;
+                links: {
+                    previous?: string // Link of previous page, may return undefined if it doesn't exists;
+                    next?: string // Link of next page, may return undefined if it doesn't exists;
+                }
+            }
+        }
+    } | null // if success will return Object
+}
+
+/**
+ * Private API Stuff
+ */
+
+
 export interface Goal {
     /** Info about Goal */
     target: {
