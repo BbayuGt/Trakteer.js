@@ -9,16 +9,17 @@ interface ClientEvents {
     'disconnect': (timestamp:Date) => void
 }
 
-export declare interface Client {
+export declare interface streamAPI {
     on<U extends keyof ClientEvents>(event:U, listener: ClientEvents[U]):this
 }
 
-export class Client extends EventEmitter {
+export class streamAPI extends EventEmitter {
     username:string
     streamKey:`trstream-${string}`
     userId:string | undefined
     client:WebSocket
     agent: HttpsProxyAgent | undefined
+    isConnected: boolean = false
     private messages:RawData[] = []
     private pingInterval:NodeJS.Timer | undefined
 
@@ -40,8 +41,6 @@ export class Client extends EventEmitter {
             }
         })
         
-
-        // It will connect automatically. instead of calling this.start(). start will be useless now
         this.client.once("open", () => {
             axios.get(`https://trakteer.id/${this.username}/stream?key=${this.streamKey}`, {
                 httpsAgent:this.agent
@@ -79,6 +78,8 @@ export class Client extends EventEmitter {
                     }
                 }))
 
+                
+                this.isConnected = true
                 this.emit("connect", new Date())
             })
         })
@@ -90,6 +91,7 @@ export class Client extends EventEmitter {
         })
 
         this.client.once("close", (code, reason) => {
+            this.isConnected = false
             this.emit("disconnect", new Date())
         })
     }
@@ -153,30 +155,5 @@ export class Client extends EventEmitter {
             title:data.targetTitle,
             url:data.pageUrl
         }
-    }
-
-    /**
-     * 
-     * @param cb This will triggered when The client is ready.
-     * @deprecated This will removed on later version, please use `client.on("open")` instead.
-     */
-    onOpen(cb:CallableFunction) {
-        this.client.on("open", () => {
-            cb(true)
-            return
-        })
-    }
-
-    /**
-     * 
-     * @param cb This will triggered when donation is detected
-     * @deprecated This will removed on later version, please use `client.on("donation")` instead.
-     */
-    onDonation(cb:CallableFunction) {
-        this.client.on("message", (message)=> {
-            if (message.toString().startsWith(`{"channel"`)) {
-                cb(JSON.parse(JSON.parse(message.toString()).data))
-            }
-        })
     }
 }

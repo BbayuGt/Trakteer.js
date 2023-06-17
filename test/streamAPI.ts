@@ -1,8 +1,8 @@
-import { Client } from "../src";
+import { streamAPI } from "../src";
 
-const client = new Client("PageID", "trstream-xxx") //Cek page id di : https://trakteer.id/manage/my-page/settings
+const client = new streamAPI("PageID", "trstream-xxx") //Cek page id di : https://trakteer.id/manage/my-page/settings
 // Or use Proxy!
-const clientProxy = new Client("PageID", "trstream-xxx", "https://proxy.com:1234/")
+const clientProxy = new streamAPI("PageID", "trstream-xxx", "https://proxy.com:1234/")
 
 client.on("connect", (timestamp)=> {
     console.log("Connected on " + timestamp)
