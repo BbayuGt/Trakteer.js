@@ -1,5 +1,6 @@
 import axios from "axios";
 import { supportHistory } from "../interfaces";
+import createHttpsProxyAgent from "https-proxy-agent";
 
 /**
  * Public API - Use the official API From trakteer
@@ -7,9 +8,13 @@ import { supportHistory } from "../interfaces";
  */
 export class publicAPI {
     public APIkey?:string;
+    private proxy?: createHttpsProxyAgent.HttpsProxyAgentOptions | string
+    private userAgent?: string
     
-    constructor (apiKey:string) {
+    constructor (apiKey:string, proxy?:string | createHttpsProxyAgent.HttpsProxyAgentOptions, userAgent?: string) {
         this.APIkey = apiKey;
+        this.proxy = proxy,
+        this.userAgent = userAgent
     }
 
     /**
@@ -25,7 +30,9 @@ export class publicAPI {
                 Accept: "application/json",
                 "X-Requested-With": "XMLHttpRequest",
                 "key":this.APIkey,
-            }
+                "User-Agent": this.userAgent
+            },
+            httpsAgent: this.proxy
         })
         return req.data
     }
@@ -43,7 +50,8 @@ export class publicAPI {
                 Accept: "application/json",
                 "X-Requested-With": "XMLHttpRequest",
                 "key":this.APIkey,
-            }
+            },
+            httpsAgent: this.proxy
         })
         return req.data
     }
