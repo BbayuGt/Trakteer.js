@@ -74,6 +74,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+Unofficial Trakteer Streaming API (Using websocket)
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
