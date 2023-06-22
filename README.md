@@ -145,7 +145,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the APACHE 2.0 + DNH License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -154,7 +154,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@BbayuGt](https://twitter.com/BbayuGt) - ganyuubot@gmail.com
+BbayuGt - [@BbayuGt](https://twitter.com/BbayuGt) - ganyuubot@gmail.com
+
+Discord - @bbayugt
 
 Project Link: [https://github.com/BbayuGt/Trakteer.js](https://github.com/BbayuGt/Trakteer.js)
 
