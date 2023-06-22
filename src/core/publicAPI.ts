@@ -45,7 +45,35 @@ export class publicAPI {
      * @returns support history
      */
     async supportHistory(limit = 10, page = 1):Promise<supportHistory> {
-        const req = await axios.get(`https://api.trakteer.id/v1/public/support-history?limit=${limit}&page=${page}`, {
+        const req = await axios.get(`https://api.trakteer.id/v1/public/supports?limit=${limit}&page=${page}`, {
+            headers: {
+                Accept: "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "key":this.APIkey,
+            },
+            httpsAgent: this.proxy
+        })
+        return req.data
+    }
+
+    /**
+     * API ini digunakan untuk melihat jumlah saldo yang dimiliki.
+     * @returns Amount of balance
+     */
+    async currentBalance():Promise<number> {
+        const req = await axios.get(`https://api.trakteer.id/v1/public/current-balance`, {
+            headers: {
+                Accept: "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "key":this.APIkey,
+            },
+            httpsAgent: this.proxy
+        })
+        return req.data
+    }
+
+    async transactionHistory(limit = 5, page = 1) {
+        const req = await axios.get(`https://api.trakteer.id/v1/public/transactions?limit=${limit}&page=${page}`, {
             headers: {
                 Accept: "application/json",
                 "X-Requested-With": "XMLHttpRequest",
