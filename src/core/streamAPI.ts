@@ -4,13 +4,14 @@ import { EventEmitter, RawData, WebSocket } from "ws";
 import { Goal, leaderboard, supporter } from "../interfaces";
 
 interface ClientEvents {
-  donation: (message: JSON) => void;
+  donation: (message: Object) => void;
   connect: (timestamp: Date) => void;
   disconnect: (timestamp: Date) => void;
 }
 
 export declare interface streamAPI {
   on<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this;
+  once<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this;
 }
 
 export class streamAPI extends EventEmitter {

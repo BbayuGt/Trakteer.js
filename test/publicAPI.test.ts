@@ -1,10 +1,10 @@
 import { publicAPI } from "../src";
-import { it, test, expect } from "bun:test";
+import { describe, test, expect } from "bun:test";
 
 if (!process.env.APIKEY) throw new Error("APIKEY is not defined");
 const client = new publicAPI(process.env.APIKEY); //Cek APIkey di https://trakteer.id/manage/api-trakteer
 
-it("should get user info", () => {
+describe("it should get user info", () => {
   test("quantityGiven", async () => {
     const result = await client.quantityGiven("test@example.com");
     expect(result).toBeObject();
