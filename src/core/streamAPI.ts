@@ -14,6 +14,12 @@ export declare interface streamAPI {
   once<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this;
 }
 
+type WSMessage = {
+  channel?: string;
+  event: string;
+  data?: any;
+};
+
 export class streamAPI extends EventEmitter {
   username: string;
   streamKey: `trstream-${string}`;
@@ -109,8 +115,12 @@ export class streamAPI extends EventEmitter {
     });
 
     this.client.on("message", (message) => {
-      if (message.toString().startsWith(`{"channel"`)) {
-        this.emit("donation", JSON.parse(JSON.parse(message.toString()).data));
+      const msg = JSON.parse(message.toString()) as WSMessage;
+      if (
+        msg.event ===
+        "Illuminate\\Notifications\\Events\\BroadcastNotificationCreated"
+      ) {
+        this.emit("donation", JSON.parse(msg.data));
       }
     });
 
