@@ -8,7 +8,7 @@
     "test": "dist/test"
   },
   "scripts": {
-    "prepare": "tsc",
+    "prepublish": "tsc",
     "test": "bun test",
     "release": "release-it"
   },
