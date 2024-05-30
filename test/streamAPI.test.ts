@@ -1,20 +1,24 @@
 import { streamAPI } from "../src";
 
-const client = new streamAPI("PageID", "trstream-xxx") //Cek page id di : https://trakteer.id/manage/my-page/settings
-// Or use Proxy!
-const clientProxy = new streamAPI("PageID", "trstream-xxx", "https://proxy.com:1234/")
+if (!process.env.PAGEID || !process.env.STREAM_APIKEY)
+  throw new Error("PAGEID or STREAM_APIKEY is not defined");
 
-client.on("connect", (timestamp)=> {
-    console.log("Connected on " + timestamp)
-})
+const client = new streamAPI(
+  process.env.PAGEID,
+  process.env.STREAM_APIKEY as any
+); //Cek page id di : https://trakteer.id/manage/my-page/settings
+
+client.on("connect", (timestamp) => {
+  console.log("Connected on " + timestamp);
+});
 
 client.on("disconnect", (timestamp) => {
-    console.log("Disconnected on " + timestamp)
-})
+  console.log("Disconnected on " + timestamp);
+});
 
-client.on("donation", (donation)=>{
-    console.log(donation)
-    /*
+client.on("donation", (donation) => {
+  console.log(donation);
+  /*
         {
             tip_id:"id",
             supporter_name:"Supporter name",
@@ -28,11 +32,11 @@ client.on("donation", (donation)=>{
             type: "new_tip" // No use for now.
         }
     */
-})
+});
 
-client.getLeaderboard().then(result=>{
-    console.log(result)
-    /*
+client.getLeaderboard().then((result) => {
+  console.log(result);
+  /*
     {
         pageUrl: 'trakteer.id/PageID',
         unitIcon: 'https://trakteer.id/storage/images/units/uic-xxx.png',
@@ -47,22 +51,22 @@ client.getLeaderboard().then(result=>{
         ]
     }
     */
-})
+});
 
-client.getGoal().then(result=>{
-    console.log(result)
-    /*
+client.getGoal().then((result) => {
+  console.log(result);
+  /*
         {
             target: { current: 69000, target: 420000, progress: 69.420 },
             title: 'Goal Title',
             url: 'trakteer.id/YourPageID'
         }
     */
-})
+});
 
-client.getSupporter(2).then((result)=> {
-    console.log(result)
-    /*
+client.getSupporter(2).then((result) => {
+  console.log(result);
+  /*
         [
             {
                 display_name: 'Name #1',
@@ -76,4 +80,4 @@ client.getSupporter(2).then((result)=> {
             }
         ]
     */
-})
+});
