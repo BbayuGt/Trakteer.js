@@ -1,10 +1,16 @@
 import axios from "axios";
 import createHttpsProxyAgent, { HttpsProxyAgent } from "https-proxy-agent";
 import { EventEmitter, RawData, WebSocket } from "ws";
-import { Goal, leaderboard, supporter } from "../interfaces";
+import {
+  Donation,
+  Goal,
+  leaderboard,
+  rawDonation,
+  supporter,
+} from "../interfaces";
 
 interface ClientEvents {
-  donation: (message: Object) => void;
+  donation: (message: Donation) => void;
   connect: (timestamp: Date) => void;
   disconnect: (timestamp: Date) => void;
 }
@@ -120,7 +126,11 @@ export class streamAPI extends EventEmitter {
         msg.event ===
         "Illuminate\\Notifications\\Events\\BroadcastNotificationCreated"
       ) {
-        this.emit("donation", JSON.parse(msg.data));
+        const msgdata = JSON.parse(msg.data) as rawDonation & Donation;
+        msgdata.price_number = parseInt(
+          msgdata.price.replace(/[^\d\,]/gm, "").replace(",", ".")
+        );
+        this.emit("donation", msgdata);
       }
     });
 
