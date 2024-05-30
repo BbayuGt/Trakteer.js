@@ -1,10 +1,16 @@
 import axios from "axios";
 import createHttpsProxyAgent, { HttpsProxyAgent } from "https-proxy-agent";
 import { EventEmitter, RawData, WebSocket } from "ws";
-import { Goal, leaderboard, supporter } from "../interfaces";
+import {
+  Donation,
+  Goal,
+  leaderboard,
+  rawDonation,
+  supporter,
+} from "../interfaces";
 
 interface ClientEvents {
-  donation: (message: Object) => void;
+  donation: (message: Donation) => void;
   connect: (timestamp: Date) => void;
   disconnect: (timestamp: Date) => void;
 }
@@ -13,6 +19,12 @@ export declare interface streamAPI {
   on<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this;
   once<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this;
 }
+
+type WSMessage = {
+  channel?: string;
+  event: string;
+  data?: any;
+};
 
 export class streamAPI extends EventEmitter {
   username: string;
@@ -109,8 +121,16 @@ export class streamAPI extends EventEmitter {
     });
 
     this.client.on("message", (message) => {
-      if (message.toString().startsWith(`{"channel"`)) {
-        this.emit("donation", JSON.parse(JSON.parse(message.toString()).data));
+      const msg = JSON.parse(message.toString()) as WSMessage;
+      if (
+        msg.event ===
+        "Illuminate\\Notifications\\Events\\BroadcastNotificationCreated"
+      ) {
+        const msgdata = JSON.parse(msg.data) as rawDonation & Donation;
+        msgdata.price_number = parseInt(
+          msgdata.price.replace(/[^\d\,]/gm, "").replace(",", ".")
+        );
+        this.emit("donation", msgdata);
       }
     });
 

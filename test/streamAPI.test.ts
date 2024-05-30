@@ -1,5 +1,7 @@
 import { streamAPI } from "../src";
 import { describe, expect, test } from "bun:test";
+import { once } from "events";
+import { Donation } from "../src/interfaces";
 
 if (!process.env.PAGEID || !process.env.STREAM_APIKEY)
   throw new Error("PAGEID or STREAM_APIKEY is not defined");
@@ -17,10 +19,23 @@ describe("should connect to stream", async () => {
     });
   });
 
-  test("Should fire on donation", () => {
-    client.once("donation", (donation: Object) => {
-      expect(donation).toBeObject();
-    });
+  test("Should fire on donation", async () => {
+    const [donation] = (await once(client, "donation")) as Donation[];
+    expect(donation).toBeObject();
+    expect(donation).toContainKeys([
+      "id",
+      "media",
+      "price",
+      "price_number",
+      "quantity",
+      "supporter_avatar",
+      "supporter_message",
+      "supporter_name",
+      "type",
+      "unit",
+      "unit_icon",
+    ]);
+    expect(donation.price_number).toBeNumber();
   });
 
   test("Get the leaderboard", async () => {
