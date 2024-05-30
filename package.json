@@ -3,12 +3,14 @@
   "version": "2.0.1",
   "description": "Unofficial Trakteer Streaming API (Using websocket)",
   "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "directories": {
     "test": "dist/test"
   },
   "scripts": {
-    "prepublish": "bunx tsc",
-    "test": "bun test"
+    "prepare": "tsc",
+    "test": "bun test",
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
