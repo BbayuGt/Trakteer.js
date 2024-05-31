@@ -92,7 +92,7 @@ export interface rawDonation {
   /**
    * Supporter message
    */
-  supporter_message: string;
+  supporter_message: string | null;
 
   /**
    * Supporter name
