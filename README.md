@@ -155,7 +155,7 @@ Distributed under the APACHE 2.0 + DNH License. See `LICENSE` for more informati
 <!-- CONTACT -->
 ## Contact
 
-BbayuGt - [@BbayuGt](https://twitter.com/BbayuGt) - ganyuubot@gmail.com
+BbayuGt - [@BbayuGt](https://twitter.com/BbayuGt) - bbayugt@proton.me
 
 Discord - @bbayugt
 
