@@ -142,25 +142,21 @@ export interface leaderboard {
   /**
    * Supporter list
    */
-  supporter:
-    | [
-        {
-          /**
-           * Supporter name
-           * @returns String or "" if null
-           */
-          supporter_name: string | "";
-          /**
-           * Avatar URL
-           * @returns URL or Null if no avatar
-           * @example https:\/\/lh3.googleusercontent.com\/a-\/AOh14Gi45Ig9QTQozpqkD_SgPcB190KAwStLhex1Y-CT5w=s96-c
-           */
-          avatar: string | null;
-          /**
-           * Total donation
-           */
-          sum: number;
-        }
-      ]
-    | [];
+  supporter: {
+    /**
+     * Supporter name
+     * @returns String or "" if null
+     */
+    supporter_name: string | "";
+    /**
+     * Avatar URL
+     * @returns URL or Null if no avatar
+     * @example https:\/\/lh3.googleusercontent.com\/a-\/AOh14Gi45Ig9QTQozpqkD_SgPcB190KAwStLhex1Y-CT5w=s96-c
+     */
+    avatar: string | null;
+    /**
+     * Total donation
+     */
+    sum: number;
+  }[];
 }
