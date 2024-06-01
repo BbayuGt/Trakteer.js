@@ -1,7 +1,5 @@
 <a name="readme-top"></a>
 
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -10,13 +8,11 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -41,8 +37,6 @@
   </p>
 </div>
 
-
-
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -57,39 +51,33 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 Unofficial Trakteer Streaming API (Using websocket)
+
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 ### Built With
 
-* [![Typescript][Typescript]][Typescript-url]
+- [![Typescript][Typescript]][Typescript-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
@@ -98,34 +86,48 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use Trakteer.js and how to install them.
-* npm
+
+- npm
   ```sh
   npm install trakteerjs@latest
   ```
 
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
-
-_For examples, please refer to the [Test](https://github.com/BbayuGt/Trakteer.js/tree/main/test)_
+_For examples, please refer to the [Examples](https://github.com/BbayuGt/Trakteer.js/tree/main/examples)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- ROADMAP -->
+
 ## Features
 
-- [x] Use the official public API By trakteer
-- [x] Use the Streaming API with WebSocket for live donation
+- Public API
+
+| Features            | Implemented? | How to use it           |
+| ------------------- | ------------ | ----------------------- |
+| Quantity Given      | Yes          | `.quantityGiven(email)` |
+| Support History     | Yes          | `.supportHistory()`     |
+| Current Balance     | Yes          | `.currentBalance()`     |
+| Transaction History | Yes          | `.transactionHistory()` |
+
+- Stream API
+
+| Features      | Implemented? | How to use it                       |
+| ------------- | ------------ | ----------------------------------- |
+| Live Donation | Yes          | `.on("donation", (donation) => {})` |
+| Leaderboard   | Yes          | `.getLeaderboard()`                 |
+| Get Goal      | Yes          | `.getGoal()`                        |
+| Get Supporter | Yes          | `.getSupporter()`                   |
 
 See the [open issues](https://github.com/BbayuGt/Trakteer.js/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -141,18 +143,16 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the APACHE 2.0 + DNH License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
+
 ## Contact
 
 BbayuGt - [@BbayuGt](https://twitter.com/BbayuGt) - bbayugt@proton.me
@@ -163,9 +163,9 @@ Project Link: [https://github.com/BbayuGt/Trakteer.js](https://github.com/BbayuG
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/BbayuGt/Trakteer.js.svg?style=for-the-badge
 [contributors-url]: https://github.com/BbayuGt/Trakteer.js/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/BbayuGt/Trakteer.js.svg?style=for-the-badge
@@ -192,6 +192,6 @@ Project Link: [https://github.com/BbayuGt/Trakteer.js](https://github.com/BbayuG
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+[JQuery-url]: https://jquery.com
 [Typescript]: https://img.shields.io/badge/typescript-000000?style=for-the-badge&logo=typescript&logoColor=white
 [Typescript-url]: https://www.typescriptlang.org/
