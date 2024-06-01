@@ -49,6 +49,7 @@ describe("should connect to stream", async () => {
 
   test("Get Goal Information", async () => {
     const res = await client.getGoal();
+    console.log(res)
     expect(res.target).toBeObject();
     expect(res.target.current).toBeNumber();
     expect(res.target.progress).toBeNumber();
