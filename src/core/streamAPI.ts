@@ -26,9 +26,11 @@ type WSMessage = {
   data?: any;
 };
 
+export type streamKey = `trstream-${string}`;
+
 export class streamAPI extends EventEmitter {
   username: string;
-  streamKey: `trstream-${string}`;
+  streamKey: streamKey;
   userId: string | undefined;
   client: WebSocket;
   agent?: HttpsProxyAgent<string>;
