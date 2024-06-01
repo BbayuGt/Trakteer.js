@@ -1,6 +1,6 @@
-import axios from "axios";
-import { supportHistory } from "../interfaces";
-import createHttpsProxyAgent from "https-proxy-agent";
+import axios, { AxiosInstance } from "axios";
+import { supportHistory, transactionHistory } from "../interfaces";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
 /**
  * Public API - Use the official API From trakteer
@@ -8,16 +8,15 @@ import createHttpsProxyAgent from "https-proxy-agent";
  */
 export class publicAPI {
   public APIkey?: string;
-  private proxy?: createHttpsProxyAgent.HttpsProxyAgentOptions | string;
+  private proxy?: HttpsProxyAgent<string>;
   private userAgent?: string;
+  private axiosClient: AxiosInstance;
 
-  constructor(
-    apiKey: string,
-    proxy?: string | createHttpsProxyAgent.HttpsProxyAgentOptions,
-    userAgent?: string
-  ) {
+  constructor(apiKey: string, proxy?: string, userAgent?: string) {
     this.APIkey = apiKey;
-    (this.proxy = proxy), (this.userAgent = userAgent);
+    if (proxy) this.proxy = new HttpsProxyAgent(proxy);
+    this.userAgent = userAgent;
+    this.axiosClient = axios.create({ httpsAgent: this.proxy });
   }
 
   /**
@@ -25,7 +24,7 @@ export class publicAPI {
    * @param email Supporter Email
    * @returns is unknown, please open issue if you have one example.
    */
-  async quantityGiven(email: string) {
+  async quantityGiven(email: string): Promise<number | Error> {
     const req = await axios.post(
       "https://api.trakteer.id/v1/public/quantity-given",
       {
@@ -41,7 +40,8 @@ export class publicAPI {
         httpsAgent: this.proxy,
       }
     );
-    return req.data;
+    if (req.data.status === "error") return new Error(req.data.message);
+    return parseInt(req.data.result);
   }
 
   /**
@@ -51,7 +51,7 @@ export class publicAPI {
    * @returns support history
    */
   async supportHistory(limit = 10, page = 1): Promise<supportHistory> {
-    const req = await axios.get(
+    const req = await this.axiosClient.get(
       `https://api.trakteer.id/v1/public/supports?limit=${limit}&page=${page}`,
       {
         headers: {
@@ -69,8 +69,8 @@ export class publicAPI {
    * API ini digunakan untuk melihat jumlah saldo yang dimiliki.
    * @returns Amount of balance
    */
-  async currentBalance(): Promise<number | string> {
-    const req = await axios.get(
+  async currentBalance(): Promise<number | Error> {
+    const req = await this.axiosClient.get(
       `https://api.trakteer.id/v1/public/current-balance`,
       {
         headers: {
@@ -82,12 +82,12 @@ export class publicAPI {
       }
     );
     if (!req.data || req.data.status !== "success")
-      return req.data.message as string;
+      return Error(req.data.message as string);
     else return parseFloat(req.data.result);
   }
 
-  async transactionHistory(limit = 5, page = 1) {
-    const req = await axios.get(
+  async transactionHistory(limit = 5, page = 1): Promise<transactionHistory> {
+    const req = await this.axiosClient.get(
       `https://api.trakteer.id/v1/public/transactions?limit=${limit}&page=${page}`,
       {
         headers: {

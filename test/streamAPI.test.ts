@@ -49,6 +49,7 @@ describe("should connect to stream", async () => {
 
   test("Get Goal Information", async () => {
     const res = await client.getGoal();
+    console.log(res)
     expect(res.target).toBeObject();
     expect(res.target.current).toBeNumber();
     expect(res.target.progress).toBeNumber();
@@ -66,22 +67,4 @@ describe("should connect to stream", async () => {
       expect(res[0].quantity).toBeNumber();
     }
   });
-});
-
-client.getSupporter(2).then((result) => {
-  console.log(result);
-  /*
-        [
-            {
-                display_name: 'Name #1',
-                support_message: 'Hello!!',
-                quantity: 12
-            },
-            {
-                display_name: 'Name #2',
-                support_message: 'Sup!',
-                quantity: 10
-            }
-        ]
-    */
 });

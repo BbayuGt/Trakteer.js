@@ -6,7 +6,7 @@ export interface supportHistory {
   status: "success" | "error";
   status_code: number; // 200 is success, anything else is probably a error
   error_code?: string;
-  errors?: Object;
+  errors?: Record<any, any>;
   message: string; // if success, will return "OK"
   result: {
     data: {
@@ -122,6 +122,81 @@ export interface Donation extends rawDonation {
   price_number: number;
 }
 
+export interface transactionHistory {
+  /**
+   * Status
+   */
+  status: "success" | "error";
+  /**
+   * Status code
+   */
+  status_code: number;
+  /**
+   * Result
+   */
+  result: {
+    /**
+     * Result data
+     */
+    data: {
+      /**
+       * Creator name
+       */
+      creator_name: string;
+      /**
+       * Support message
+       */
+      support_message: string;
+      /**
+       * Quantity of unit donated
+       */
+      quantity: number;
+      /**
+       * Amount of donation (in rupiah)
+       */
+      amount: number;
+      /**
+       * Unit name
+       */
+      unit_name: string;
+      /**
+       * Status
+       */
+      status: string;
+      /**
+       * Updated at
+       */
+      updated_at: string;
+      /**
+       * Payment method
+       */
+      payment_method: string;
+      /**
+       * Order ID
+       */
+      order_id: string;
+    }[];
+    meta: {
+      include: string[];
+      pagination: {
+        total: number;
+        count: number;
+        per_page: number;
+        current_page: number;
+        total_page: number;
+        links: {
+          previous: string | null;
+          next: string | null;
+        };
+      };
+    };
+  };
+  /**
+   * Message
+   */
+  message: string;
+}
+
 export interface leaderboard {
   /**
    * Page Link
@@ -142,25 +217,21 @@ export interface leaderboard {
   /**
    * Supporter list
    */
-  supporter:
-    | [
-        {
-          /**
-           * Supporter name
-           * @returns String or "" if null
-           */
-          supporter_name: string | "";
-          /**
-           * Avatar URL
-           * @returns URL or Null if no avatar
-           * @example https:\/\/lh3.googleusercontent.com\/a-\/AOh14Gi45Ig9QTQozpqkD_SgPcB190KAwStLhex1Y-CT5w=s96-c
-           */
-          avatar: string | null;
-          /**
-           * Total donation
-           */
-          sum: number;
-        }
-      ]
-    | [];
+  supporter: {
+    /**
+     * Supporter name
+     * @returns String or "" if null
+     */
+    supporter_name: string | "";
+    /**
+     * Avatar URL
+     * @returns URL or Null if no avatar
+     * @example https:\/\/lh3.googleusercontent.com\/a-\/AOh14Gi45Ig9QTQozpqkD_SgPcB190KAwStLhex1Y-CT5w=s96-c
+     */
+    avatar: string | null;
+    /**
+     * Total donation
+     */
+    sum: number;
+  }[];
 }

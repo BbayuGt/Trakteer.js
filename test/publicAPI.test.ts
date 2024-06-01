@@ -7,7 +7,7 @@ const client = new publicAPI(process.env.APIKEY); //Cek APIkey di https://trakte
 describe("it should get user info", () => {
   test("quantityGiven", async () => {
     const result = await client.quantityGiven("test@example.com");
-    expect(result).toBeObject();
+    expect(result).toBeNumber();
   });
 
   test("supportHistory", async () => {

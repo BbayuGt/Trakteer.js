@@ -1,6 +1,6 @@
 {
   "name": "trakteerjs",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "Unofficial Trakteer Streaming API (Using websocket)",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -33,7 +33,7 @@
   "homepage": "https://github.com/BbayuGt/Trakteer.js#readme",
   "dependencies": {
     "axios": "^1.7.2",
-    "https-proxy-agent": "5",
+    "https-proxy-agent": "^7.0.4",
     "ws": "^8.17.0"
   },
   "devDependencies": {
