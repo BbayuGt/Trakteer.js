@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { supportHistory } from "../interfaces";
-import createHttpsProxyAgent from "https-proxy-agent";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
 /**
  * Public API - Use the official API From trakteer
@@ -8,16 +8,15 @@ import createHttpsProxyAgent from "https-proxy-agent";
  */
 export class publicAPI {
   public APIkey?: string;
-  private proxy?: createHttpsProxyAgent.HttpsProxyAgentOptions | string;
+  private proxy?: HttpsProxyAgent<string>;
   private userAgent?: string;
+  private axiosClient: AxiosInstance;
 
-  constructor(
-    apiKey: string,
-    proxy?: string | createHttpsProxyAgent.HttpsProxyAgentOptions,
-    userAgent?: string
-  ) {
+  constructor(apiKey: string, proxy?: string, userAgent?: string) {
     this.APIkey = apiKey;
-    (this.proxy = proxy), (this.userAgent = userAgent);
+    if (proxy) this.proxy = new HttpsProxyAgent(proxy);
+    this.userAgent = userAgent;
+    this.axiosClient = axios.create({ httpsAgent: this.proxy });
   }
 
   /**
@@ -51,7 +50,7 @@ export class publicAPI {
    * @returns support history
    */
   async supportHistory(limit = 10, page = 1): Promise<supportHistory> {
-    const req = await axios.get(
+    const req = await this.axiosClient.get(
       `https://api.trakteer.id/v1/public/supports?limit=${limit}&page=${page}`,
       {
         headers: {
@@ -70,7 +69,7 @@ export class publicAPI {
    * @returns Amount of balance
    */
   async currentBalance(): Promise<number | string> {
-    const req = await axios.get(
+    const req = await this.axiosClient.get(
       `https://api.trakteer.id/v1/public/current-balance`,
       {
         headers: {
@@ -87,7 +86,7 @@ export class publicAPI {
   }
 
   async transactionHistory(limit = 5, page = 1) {
-    const req = await axios.get(
+    const req = await this.axiosClient.get(
       `https://api.trakteer.id/v1/public/transactions?limit=${limit}&page=${page}`,
       {
         headers: {

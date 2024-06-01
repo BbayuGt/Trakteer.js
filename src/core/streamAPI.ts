@@ -1,5 +1,5 @@
 import axios from "axios";
-import createHttpsProxyAgent, { HttpsProxyAgent } from "https-proxy-agent";
+import { HttpsProxyAgent } from "https-proxy-agent";
 import { EventEmitter, RawData, WebSocket } from "ws";
 import {
   Donation,
@@ -31,7 +31,7 @@ export class streamAPI extends EventEmitter {
   streamKey: `trstream-${string}`;
   userId: string | undefined;
   client: WebSocket;
-  agent: HttpsProxyAgent | undefined;
+  agent?: HttpsProxyAgent<string>;
   isConnected: boolean = false;
   private messages: RawData[] = [];
   private pingInterval: Timer | undefined;
@@ -44,14 +44,14 @@ export class streamAPI extends EventEmitter {
   constructor(
     pageID: string,
     streamKey: `trstream-${string}`,
-    proxy?: string | createHttpsProxyAgent.HttpsProxyAgentOptions,
+    proxy?: string,
     userAgent?: string
   ) {
     super();
     this.username = pageID;
     this.streamKey = streamKey;
 
-    this.agent = !!proxy ? new HttpsProxyAgent(proxy) : undefined;
+    if (proxy) this.agent = new HttpsProxyAgent(proxy);
     this.client = new WebSocket(
       "wss://socket.trakteer.id/app/2ae25d102cc6cd41100a?protocol=7&client=js&version=5.1.1&flash=false",
       {
