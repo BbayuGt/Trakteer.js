@@ -197,6 +197,17 @@ export interface transactionHistory {
   message: string;
 }
 
+export interface latestTip {
+  unitIcon: string;
+  unitName: string;
+  latestTip: {
+    display_name: string;
+    support_message: string;
+    quantity: number;
+    media: null | string;
+  }[];
+}
+
 export interface leaderboard {
   /**
    * Page Link

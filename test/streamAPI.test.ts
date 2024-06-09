@@ -38,6 +38,20 @@ describe("should connect to stream", async () => {
     expect(donation.price_number).toBeNumber();
   });
 
+  test("Get the latest tip", async () => {
+    const res = await client.getLatestTip();
+    expect(res).toBeObject();
+    expect(res.latestTip).toBeArray();
+    expect(res.unitIcon).toBeString();
+    expect(res.unitName).toBeString();
+    if (res.latestTip[0]) {
+      expect(res.latestTip[0]).toBeObject();
+      expect(res.latestTip[0].display_name).toBeString();
+      expect(res.latestTip[0].quantity).toBeNumber();
+      expect(res.latestTip[0].support_message).toBeString();
+    }
+  });
+
   test("Get the leaderboard", async () => {
     const res = await client.getLeaderboard();
     expect(res).toBeObject();
@@ -49,7 +63,7 @@ describe("should connect to stream", async () => {
 
   test("Get Goal Information", async () => {
     const res = await client.getGoal();
-    console.log(res)
+    console.log(res);
     expect(res.target).toBeObject();
     expect(res.target.current).toBeNumber();
     expect(res.target.progress).toBeNumber();
