@@ -38,6 +38,17 @@ describe("should connect to stream", async () => {
     expect(donation.price_number).toBeNumber();
   });
 
+  test("Get last donation", async () => {
+    const res = await client.getLastSupporter();
+    expect(res).toBeObject();
+    expect(res.unitIcon).toBeString();
+    expect(res.unitName).toBeString();
+    expect(res.supporter).toBeObject();
+    expect(res.supporter.sum).toBeNumber();
+    expect(res.supporter.name).toBeString();
+    expect(res.supporter.support_message).toBeString();
+  });
+
   test("Get the latest tip", async () => {
     const res = await client.getLatestTip();
     expect(res).toBeObject();

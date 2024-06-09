@@ -197,6 +197,17 @@ export interface transactionHistory {
   message: string;
 }
 
+export interface lastSupporter {
+  unitIcon: string;
+  unitName: string;
+  supporter: {
+    sum: number;
+    support_message: string;
+    name: string;
+    avatar: string | null;
+  };
+}
+
 export interface latestTip {
   unitIcon: string;
   unitName: string;
