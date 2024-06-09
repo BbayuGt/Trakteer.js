@@ -57,6 +57,8 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#getting-blocked-by-cloudflare">Getting Blocked by Cloudflare?</a></li>
+    <li><a href="#legal">Legal</a></li>
   </ol>
 </details>
 
@@ -160,6 +162,16 @@ BbayuGt - [@BbayuGt](https://twitter.com/BbayuGt) - bbayugt@proton.me
 Discord - @bbayugt
 
 Project Link: [https://github.com/BbayuGt/Trakteer.js](https://github.com/BbayuGt/Trakteer.js)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Getting blocked by Cloudflare?
+
+Some Server Provider may be blocked by Cloudflare, if you get blocked, please join the [Official Trakteer Discord Server](https://discord.gg/GE5BR2EtBV) and open a ticket, trakteer moderator will help from there
+
+## Legal
+
+> Trakteer.js is NOT affiliated with, maintained, sponsored or endorsed by Trakteer or any of its affiliates. Use at your own risk!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
