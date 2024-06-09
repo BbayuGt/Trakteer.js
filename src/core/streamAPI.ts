@@ -4,6 +4,8 @@ import { EventEmitter, RawData, WebSocket } from "ws";
 import {
   Donation,
   Goal,
+  lastSupporter,
+  latestTip,
   leaderboard,
   rawDonation,
   supporter,
@@ -140,6 +142,38 @@ export class streamAPI extends EventEmitter {
       this.isConnected = false;
       this.emit("disconnect", new Date());
     });
+  }
+
+  /**
+   * Get last donation
+   * 
+   * @returns {lastSupporter}
+   */
+  async getLastSupporter(): Promise<lastSupporter> {
+    const data = await axios.get<lastSupporter>(
+      `https://api.trakteer.id/v2/${this.streamKey}/last-supporters-data`,
+      {
+        httpsAgent: this.agent,
+      }
+    );
+
+    return data.data;
+  }
+
+  /**
+   * Get the latest tips
+   * @param amount amount of tips to get
+   * @returns {latestTip}
+   */
+  async getLatestTip(amount = 3): Promise<latestTip> {
+    const data = await axios.get<latestTip>(
+      `https://api.trakteer.id/v2/stream/${this.streamKey}/latest-tips?limit=15`,
+      {
+        httpsAgent: this.agent,
+      }
+    );
+
+    return data.data;
   }
 
   /**

@@ -1,43 +1,71 @@
 /**
- * Public API Stuff
+ * Support history
  */
-
 export interface supportHistory {
+  /**
+   * Status
+   */
   status: "success" | "error";
-  status_code: number; // 200 is success, anything else is probably a error
+  /**
+   * Status code
+   * @example 200 // if success
+   * @example 404 // if error
+   */
+  status_code: number;
+  /**
+   * Error code
+   */
   error_code?: string;
+  /**
+   * Error message
+   */
   errors?: Record<any, any>;
-  message: string; // if success, will return "OK"
+  /**
+   * Message
+   * @example "OK" // if success
+   */
+  message: string;
+  /**
+   * Result query
+   */
   result: {
+    /**
+     * Result data
+     */
     data: {
+      /**
+       * Supporter name
+       */
       supporter_name: string;
+      /**
+       * Supporter message
+       */
       support_message: string;
-      quantity: number; // quantity of item donated
+      /**
+       * Quantity of unit donated
+       */
+      quantity: number;
+      /**
+       * Amount of donation (in rupiah)
+       */
       amount: number; // amount (in rupiah)
-      unit_name: string; // name of the unit
-      updated_at: string; // date and time when the donation given, in ISO format. e.g. '2022-07-02 09:22:05'
+      /**
+       * Unit name
+       */
+      unit_name: string;
+      /**
+       * date and time when the donation given, in ISO format.
+       * @example "2022-07-02 09:22:05"
+       */
+      updated_at: string;
     }[];
-    meta: {
-      include: Array<string>; // Currently have unknown use.
-      pagination: {
-        total: number; // total of donation;
-        count: number; // Number of items shown;
-        per_page: number; // Maximum number per page;
-        current_page: number; // Current page;
-        total_page: number; // Total of pages available;
-        links: {
-          previous?: string; // Link of previous page, may return undefined if it doesn't exists;
-          next?: string; // Link of next page, may return undefined if it doesn't exists;
-        };
-      };
-    };
+    meta: Meta;
   } | null; // if success will return Object
 }
 
 /**
- * Private API Stuff
+ * Goal Information
  */
-
 export interface Goal {
   /** Info about Goal */
   target: {
@@ -53,6 +81,9 @@ export interface Goal {
   url: string;
 }
 
+/**
+ * Supporter Information
+ */
 export interface supporter {
   /** Display name of supporter */
   display_name: string;
@@ -62,6 +93,9 @@ export interface supporter {
   quantity: number;
 }
 
+/**
+ * Donation Information (Raw)
+ */
 export interface rawDonation {
   /**
    * Donation Id
@@ -71,7 +105,7 @@ export interface rawDonation {
   /**
    * Donation media if exists
    */
-  media: string | null;
+  media: Media | null;
 
   /**
    * Donation price (in string)
@@ -115,6 +149,9 @@ export interface rawDonation {
   unit_icon: string;
 }
 
+/**
+ * Donation Information with added variable for better use
+ */
 export interface Donation extends rawDonation {
   /**
    * Price in number
@@ -122,6 +159,9 @@ export interface Donation extends rawDonation {
   price_number: number;
 }
 
+/**
+ * Transaction History
+ */
 export interface transactionHistory {
   /**
    * Status
@@ -176,20 +216,7 @@ export interface transactionHistory {
        */
       order_id: string;
     }[];
-    meta: {
-      include: string[];
-      pagination: {
-        total: number;
-        count: number;
-        per_page: number;
-        current_page: number;
-        total_page: number;
-        links: {
-          previous: string | null;
-          next: string | null;
-        };
-      };
-    };
+    meta: Meta;
   };
   /**
    * Message
@@ -197,6 +224,150 @@ export interface transactionHistory {
   message: string;
 }
 
+/**
+ * Meta data
+ */
+export interface Meta {
+  /**
+   * Currently have unknown use.
+   */
+  include: Array<string>;
+  /**
+   * Pagination data
+   */
+  pagination: {
+    /**
+     * total of donation
+     */
+    total: number;
+    /**
+     * Number of items shown
+     */
+    count: number;
+    /**
+     * Maximum number per page
+     */
+    per_page: number;
+    /**
+     * Current page
+     */
+    current_page: number;
+    /**
+     * Total of pages available
+     */
+    total_page: number;
+    links: {
+      /**
+       * Link of previous page, may return undefined if it doesn't exists;
+       */
+      previous?: string;
+
+      /**
+       * Link of next page, may return undefined if it doesn't exists;
+       */
+      next?: string;
+    };
+  };
+}
+
+/**
+ * Tip media if exists
+ */
+export interface Media {
+  /**
+   * ID gif selection from Giphy
+   * @example "3oEduQAsYcJKQH2XsI"
+   */
+  gif?: string;
+
+  video?: {
+    /**
+     * Youtube video id
+     * @example "dQw4w9WgXcQ"
+     */
+    id: string;
+
+    /**
+     * Start youtube duration
+     * @default 0
+     */
+    start: number;
+  };
+}
+
+/**
+ * Latest Tip Data
+ */
+export interface latestTip {
+  /**
+   * Unit icon URL
+   */
+  unitIcon: string;
+  /**
+   * Unit name
+   */
+  unitName: string;
+  /**
+   * Latest tip data
+   */
+  latestTip: {
+    /**
+     * Display name of supporter
+     */
+    display_name: string;
+    /**
+     * Support message
+     */
+    support_message: string;
+    /**
+     * Quantity of unit donated
+     */
+    quantity: number;
+    /**
+     * Media if exists
+     */
+    media: null | Media;
+  }[];
+}
+
+/**
+ * Last Supporter Data
+ */
+export interface lastSupporter {
+  /**
+   * Unit icon URL
+   */
+  unitIcon: string;
+  /**
+   * Unit name
+   */
+  unitName: string;
+  /**
+   * Supporter data
+   */
+  supporter: {
+    /**
+     * Total donation
+     */
+    sum: number;
+    /**
+     * Supporter Message
+     */
+    support_message: string;
+    /**
+     * Supporter name
+     */
+    name: string;
+    /**
+     * Supporter avatar
+     */
+    avatar: string | null;
+  };
+}
+
+/**
+ * Leaderboard Data
+ */
 export interface leaderboard {
   /**
    * Page Link
