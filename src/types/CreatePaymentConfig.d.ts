@@ -30,7 +30,19 @@ export default interface CreatePaymentConfig {
     support_message: string;
 
 	/**
+	 * Must start wth "08", not +62
 	 * (Khusus OVO) Nomor telepon donatur
 	 */
-	ovo_phone?: string;
+	ovo_phone?: `08${string}`;
+
+	/**
+	 * Must start wth "08", not +62
+	 * (Khusus LinkAja) Nomor telepon donatur
+	 */
+	linkaja_phone?: `08${string}`;
+
+	/**
+	 * (Khusus Jenius) Cashtag donatur
+	 */
+	cashtag?: string;
 }
