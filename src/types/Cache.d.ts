@@ -1,17 +1,16 @@
+export default interface CreatePaymentCache<d = any> {
+    /**
+     * Time of cache creation
+     */
+    createdAt: number;
 
-export default interface CreatePaymentCache<d=any> {
-	/**
-	 * Time of cache creation
-	 */
-	createdAt: number;
+    /**
+     * Cache expiration time
+     */
+    expiresAt: number;
 
-	/**
-	 * Cache expiration time
-	 */
-	expiresAt: number;
-
-	/**
-	 * Cache data
-	 */
-	data: d;
+    /**
+     * Cache data
+     */
+    data: d;
 }

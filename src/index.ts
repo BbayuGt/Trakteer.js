@@ -1,11 +1,11 @@
-import { publicAPI } from "./core/publicAPI"
-import { streamAPI } from "./core/streamAPI"
+import { publicAPI } from "./core/publicAPI";
+import { streamAPI } from "./core/streamAPI";
 
-export * from "./core/streamAPI"
-export * from "./core/publicAPI"
+export * from "./core/streamAPI";
+export * from "./core/publicAPI";
 
 const trakteer = {
-  streamAPI,
-  publicAPI
-}
-export default trakteer
+    streamAPI,
+    publicAPI,
+};
+export default trakteer;
