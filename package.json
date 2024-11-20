@@ -32,16 +32,16 @@
   },
   "homepage": "https://github.com/BbayuGt/Trakteer.js#readme",
   "dependencies": {
-    "axios": "^1.7.2",
-    "https-proxy-agent": "^7.0.4",
-    "ws": "^8.17.0"
+    "axios": "^1.7.7",
+    "https-proxy-agent": "^7.0.5",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/ws": "^8.5.10",
-    "ts-node": "^10.8.1"
+    "@types/ws": "^8.5.13",
+    "ts-node": "^10.9.2"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.4.5"
   }
 }

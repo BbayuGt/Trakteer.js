@@ -1,0 +1,27 @@
+name: "Comment run"
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  comment-run:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set npm token
+      run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - uses: nwtgck/actions-comment-run@v3
+      with:
+        github-token: ${{ secrets.GH_TOKEN }}
+        allowed-associations: '["OWNER"]'
+
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        GIT_USER: BbayuGt
+        GIT_PASS: ${{ secrets.GH_TOKEN }}
