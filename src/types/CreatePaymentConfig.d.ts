@@ -2,32 +2,32 @@ export default interface CreatePaymentConfig {
     /**
      * Nama donatur
      */
-    display_name: string;
+    display_name?: string;
 
     /**
      * Email donatur (guest)
      */
-    guest_email: string;
+    guest_email?: string;
 
     /**
      * Apakah donatur ingin menyembunyikan nama?
      */
-    is_anonym: boolean;
+    is_anonym?: boolean;
 
     /**
      * Apakah donatur ingin menyembunyikan pesan?
      */
-    is_private: boolean;
+    is_private?: boolean;
 
     /**
      * Perlihatkan email dengan creator
      */
-    is_showing_email: boolean;
+    is_showing_email?: boolean;
 
     /**
      * Pesan donasi
      */
-    support_message: string;
+    support_message?: string;
 
     /**
      * Must start wth "08", not +62
