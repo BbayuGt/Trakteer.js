@@ -23,7 +23,7 @@ class Cache {
 
     public refreshAllCache(): void {
         this.cache.forEach((value, key) => {
-            if (value.expiresAt < Date.now()) this.cache.delete(key);
+            if (value.expiresAt <= Date.now()) this.cache.delete(key);
         });
     }
 }
