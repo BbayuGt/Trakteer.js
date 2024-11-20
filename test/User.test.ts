@@ -18,9 +18,6 @@ describe("Get User Info", () => {
 		expect(async () => {
 			await User.getUserDetails("sdsasdasd")
 		}).toThrowError();
-		expect(async () => {
-			await User.getUserDetails()
-		})
 	})
 
 	test("Get user details", async () => {
