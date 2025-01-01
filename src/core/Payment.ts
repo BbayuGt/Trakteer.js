@@ -6,6 +6,12 @@ import CreatePaymentConfig from "../types/CreatePaymentConfig";
 import User from "./User";
 import MidtransResponse from "../types/MidtransResponse";
 
+
+/**
+ * Payment class
+ * @class
+ * @classdesc this class does all of the payment related stuff
+ */
 export default class Payment {
     /**
      * Cek semua metode pembayaran yang tersedia
@@ -54,6 +60,9 @@ export default class Payment {
         return req.data.data;
     }
 
+	/**
+	 * Get new CSRF token and cookie
+	 */
     static async generateNewToken(): Promise<
         | {
               csrf: string;
@@ -128,7 +137,7 @@ export default class Payment {
                                 parseInt(userDetail.active_unit.data.price)
                     ) {
                         throw new Error(
-                            "Minimum donation for this method is " +
+                            "Minimum donation for this method is Rp. " +
                                 paymentMethodData.min_price,
                         );
                     }
@@ -221,7 +230,7 @@ export default class Payment {
                             parseInt(userDetail.active_unit.data.price)
                 ) {
                     throw new Error(
-                        "Minimum donation for this method is " +
+                        "Minimum donation for this method is Rp. " +
                             paymentMethodData.min_price,
                     );
                 }
