@@ -1,0 +1,9 @@
+.git
+.github
+examples
+src
+test
+*.lockb
+.*.json
+tsconfig.json
+*.md
