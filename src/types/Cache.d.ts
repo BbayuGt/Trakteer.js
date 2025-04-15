@@ -1,4 +1,4 @@
-export interface CreatePaymentCache<d = any> {
+export default interface CreatePaymentCache<d = any> {
     /**
      * Time of cache creation
      */

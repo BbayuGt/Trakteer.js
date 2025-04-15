@@ -1,4 +1,4 @@
-export interface UserGoal {
+export default interface UserGoal {
     /**
      * Judul goal
      */

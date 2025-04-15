@@ -1,4 +1,4 @@
-export interface PaymentMethod {
+export default interface PaymentMethod {
     /**
      * Method ID
      * @example "ovo"

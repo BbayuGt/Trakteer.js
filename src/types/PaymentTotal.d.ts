@@ -1,4 +1,4 @@
-export interface PaymentTotal {
+export default interface PaymentTotal {
     /**
      * Harga dalam rupiah
      */
