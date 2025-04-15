@@ -102,6 +102,14 @@ _For examples, please refer to the [Examples](https://github.com/BbayuGt/Traktee
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- Documentation -->
+
+## Documentation
+
+- [Trakteer.js Documentation](https://bbayugt.github.io/Trakteer.js/)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- ROADMAP -->
 
 ## Features
@@ -123,6 +131,14 @@ _For examples, please refer to the [Examples](https://github.com/BbayuGt/Traktee
 | Leaderboard   | Yes          | `.getLeaderboard()`                 |
 | Get Goal      | Yes          | `.getGoal()`                        |
 | Get Supporter | Yes          | `.getSupporter()`                   |
+
+- Payment API
+
+| Features              | Implemented?       | How to use it                 |
+| --------------------- | ------------------ | ----------------------------- |
+| Get payment methods   | Yes                | `.getPaymentMethods(creatorId, paymentMethod, amount, config)`        |
+| Get total amount      | Yes                | `.getTotalAmount(paymentMethod, amount, is_payment_fee_by_supporter)`           |
+| Create payment        | Yes                | `.createPayment(creatorId, paymentMethod, amount, config)`            |
 
 See the [open issues](https://github.com/BbayuGt/Trakteer.js/issues) for a full list of proposed features (and known issues).
 
