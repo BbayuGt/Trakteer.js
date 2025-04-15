@@ -3,16 +3,16 @@ import PaymentMethod from "../types/PaymentMethod";
 import Cache from "../etc/Cache";
 import PaymentTotal from "../types/PaymentTotal";
 import CreatePaymentConfig from "../types/CreatePaymentConfig";
-import User from "./User";
+import { User } from "./User";
 import MidtransResponse from "../types/MidtransResponse";
 
 
 /**
  * Payment class
- * @class
+ * @class Payment
  * @classdesc this class does all of the payment related stuff
  */
-export default class Payment {
+export class Payment {
     /**
      * Cek semua metode pembayaran yang tersedia
      * @returns Metode pembayaran yang tersedia
