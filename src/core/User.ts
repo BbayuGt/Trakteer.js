@@ -2,7 +2,7 @@ import axios from "axios";
 import Cache from "../etc/Cache";
 import UserSummary from "../types/UserSummary";
 
-export class User {
+export default class User {
     /**
      * Mendapatkan ID user dari page id
      * @param pageId Page id
