@@ -11,7 +11,7 @@
     "prepare": "tsc",
     "test": "bun test",
     "release": "release-it",
-	"docs": "rm -rf docs && typedoc"
+    "docs": "rm -rf docs && typedoc --plugin typedoc-plugin-missing-exports"
   },
   "repository": {
     "type": "git",
@@ -41,7 +41,8 @@
     "@types/bun": "^1.1.13",
     "@types/ws": "^8.5.13",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.28.2"
+    "typedoc": "^0.28.2",
+    "typedoc-plugin-missing-exports": "^4.0.0"
   },
   "peerDependencies": {
     "typescript": "^5.6.3"
