@@ -3,7 +3,7 @@ import PageStatus from "./PageStatus";
 import StreamSettings from "./StreamSettings";
 import UserGoal from "./UserGoal";
 
-export default interface UserSummary {
+export interface UserSummary {
     /**
      * id user
      */

@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cache from "../etc/Cache";
-import UserSummary from "../types/UserSummary";
+import { UserSummary } from "../types/UserSummary";
 
 export class User {
     /**

@@ -1,4 +1,4 @@
-export default interface PageStatus {
+export interface PageStatus {
     /**
      * Apakah page ini di-restricted?
      */

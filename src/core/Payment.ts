@@ -1,10 +1,10 @@
 import axios from "axios";
-import PaymentMethod from "../types/PaymentMethod";
+import { PaymentMethod } from "../types/PaymentMethod";
 import Cache from "../etc/Cache";
-import PaymentTotal from "../types/PaymentTotal";
-import CreatePaymentConfig from "../types/CreatePaymentConfig";
+import { PaymentTotal } from "../types/PaymentTotal";
+import { CreatePaymentConfig } from "../types/CreatePaymentConfig";
 import { User } from "./User";
-import MidtransResponse from "../types/MidtransResponse";
+import { MidtransResponse } from "../types/MidtransResponse";
 
 
 /**

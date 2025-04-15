@@ -1,4 +1,4 @@
-export default interface CreatePaymentConfig {
+export interface CreatePaymentConfig {
     /**
      * Nama donatur
      */

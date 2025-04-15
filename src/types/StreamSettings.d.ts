@@ -1,4 +1,4 @@
-export default interface StreamSettings {
+export interface StreamSettings {
     /**
      * Nama Level
      */

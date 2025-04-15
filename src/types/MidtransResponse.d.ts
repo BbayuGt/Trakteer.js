@@ -1,4 +1,4 @@
-export default interface MidtransResponse {
+export interface MidtransResponse {
     /**
      * Status code
      */

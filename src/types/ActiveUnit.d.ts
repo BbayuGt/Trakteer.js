@@ -1,4 +1,4 @@
-export default interface ActiveUnit {
+export interface ActiveUnit {
     /**
      * Unit ID
      */
