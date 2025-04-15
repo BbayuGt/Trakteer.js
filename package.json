@@ -10,7 +10,8 @@
   "scripts": {
     "prepare": "tsc",
     "test": "bun test",
-    "release": "release-it"
+    "release": "release-it",
+	"docs": "rm -rf docs && typedoc"
   },
   "repository": {
     "type": "git",

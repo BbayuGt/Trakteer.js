@@ -140,6 +140,7 @@ _For examples, please refer to the [Examples](https://github.com/BbayuGt/Traktee
 | Get total amount      | Yes                | `.getTotalAmount(paymentMethod, amount, is_payment_fee_by_supporter)`           |
 | Create payment        | Yes                | `.createPayment(creatorId, paymentMethod, amount, config)`            |
 
+See the [API Documentation](https://bbayugt.github.io/Trakteer.js/) for more details. (Some features probably not listed here.)
 See the [open issues](https://github.com/BbayuGt/Trakteer.js/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
