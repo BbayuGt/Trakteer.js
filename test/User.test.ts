@@ -1,6 +1,6 @@
 
 import {describe, test, expect} from "bun:test";
-import { User } from "../src/core/User";
+import User from "../src/core/User";
 
 describe("Get User Info", () => {
 	test("Get User ID from Page ID", async () => {

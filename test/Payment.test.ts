@@ -1,6 +1,6 @@
 
-import { User } from '../src/core/User';
-import { Payment } from '../src/core/Payment';
+import User from '../src/core/User';
+import Payment from '../src/core/Payment';
 import { describe, expect, test } from 'bun:test';
 
 describe("Test Payment", () => {

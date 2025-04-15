@@ -1,4 +1,4 @@
-import { CreatePaymentCache } from "../types/Cache";
+import CreatePaymentCache from "../types/Cache";
 
 class Cache {
     private cache: Map<string, CreatePaymentCache> = new Map();
