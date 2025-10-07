@@ -11,7 +11,7 @@ export * from "./core/User";
 const trakteer = {
     streamAPI,
     publicAPI,
-	Payment,
-	User
+    Payment,
+    User
 };
 export default trakteer;
