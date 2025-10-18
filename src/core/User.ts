@@ -15,10 +15,10 @@ export default class User {
 
         const req = await axios
             .get(`https://trakteer.id/${pageId}`)
-            .catch((e) => {
+            .catch(() => {
                 throw new Error("User not found/Something not working");
             });
-        const UserId = req.data.match(/(?<=creator-id=")(.*?)(?=\")/);
+        const UserId = req.data.match(/(?<=creator-id=")(.*?)(?=")/);
 
         if (req.status === 200 && !UserId)
             throw new Error("User not found/Invalid page id/Inactive page");

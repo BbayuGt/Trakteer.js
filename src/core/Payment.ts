@@ -80,7 +80,7 @@ export default class Payment {
             withCredentials: true,
         });
         const csrfMatch = req.data.match(
-            /(?<=\"csrf-token\" content=\")(.*?)(?=\")/,
+            /(?<="csrf-token" content=")(.*?)(?=")/,
         );
         if (!csrfMatch) throw new Error("Failed to get csrf token");
 
@@ -313,6 +313,7 @@ export default class Payment {
                     }
                 }
             }
+            break;
 
             case "trakteer":
                 throw new Error("Payment method not supported (require login)");

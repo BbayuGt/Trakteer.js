@@ -17,7 +17,7 @@ interface ClientEvents {
     disconnect: (timestamp: Date) => void;
 }
 
-export declare interface streamAPI {
+export declare interface streamAPIInterface {
     on<U extends keyof ClientEvents>(event: U, listener: ClientEvents[U]): this;
     once<U extends keyof ClientEvents>(
         event: U,
@@ -33,7 +33,7 @@ type WSMessage = {
 
 export type streamKey = `trstream-${string}`;
 
-export class streamAPI extends EventEmitter {
+export class streamAPI extends EventEmitter implements streamAPIInterface {
     username: string;
     streamKey: streamKey;
     userId: string | undefined;
@@ -80,7 +80,14 @@ export class streamAPI extends EventEmitter {
                     },
                 )
                 .then((data) => {
-                    const userid: any = data.data;
+                    const userid: unknown = data.data;
+
+                    // validasi userid
+                    if (typeof userid !== "string")
+                        throw new Error(
+                            "Failed to read userId data! Invalid key/username?",
+                        );
+
                     const result = /creator-stream\.(.*?)\./gi.exec(userid);
 
                     if (!data.data || !result || !result![1])
@@ -135,13 +142,13 @@ export class streamAPI extends EventEmitter {
             ) {
                 const msgdata = JSON.parse(msg.data) as rawDonation & Donation;
                 msgdata.price_number = parseInt(
-                    msgdata.price.replace(/[^\d\,]/gm, "").replace(",", "."),
+                    msgdata.price.replace(/[^\d,]/gm, "").replace(",", "."),
                 );
                 this.emit("donation", msgdata);
             }
         });
 
-        this.client.once("close", (code, reason) => {
+        this.client.once("close", () => {
             this.isConnected = false;
             this.emit("disconnect", new Date());
         });
@@ -170,7 +177,7 @@ export class streamAPI extends EventEmitter {
      */
     async getLatestTip(amount = 3): Promise<latestTip> {
         const data = await axios.get<latestTip>(
-            `https://api.trakteer.id/v2/stream/${this.streamKey}/latest-tips?limit=15`,
+            `https://api.trakteer.id/v2/stream/${this.streamKey}/latest-tips?limit=${amount}`,
             {
                 httpsAgent: this.agent,
             },
@@ -192,7 +199,7 @@ export class streamAPI extends EventEmitter {
         sortBy: "nominal" | "unit" = "unit",
     ): Promise<leaderboard> {
         const data = (
-            await axios.get<any>(
+            await axios.get<unknown>(
                 `https://api.trakteer.id/v2/stream/${this.streamKey}/top-supporters?interval=${dayInterval}&count=${maxAmount}&sortby=${sortBy}`,
                 {
                     httpsAgent: this.agent,
@@ -240,7 +247,7 @@ export class streamAPI extends EventEmitter {
             )
         ).data;
 
-        let [currentGoal, targetGoal]: number[] = data.targetValue
+        const [currentGoal, targetGoal]: number[] = data.targetValue
             .replace(/\./g, "")
             .split("/")
             .map((x: string) => parseFloat(x.replace("Rp ", "")));
