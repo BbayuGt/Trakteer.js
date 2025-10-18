@@ -15,6 +15,8 @@ interface ClientEvents {
     donation: (message: Donation) => void;
     connect: (timestamp: Date) => void;
     disconnect: (timestamp: Date) => void;
+    ping_sent: (timestamp: Date) => void;
+    pong_received: (timestamp: Date) => void;
 }
 
 export declare interface streamAPIInterface {
@@ -28,7 +30,7 @@ export declare interface streamAPIInterface {
 type WSMessage = {
     channel?: string;
     event: string;
-    data?: any;
+    data?: unknown;
 };
 
 export type streamKey = `trstream-${string}`;
@@ -37,13 +39,13 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
     username: string;
     streamKey: streamKey;
     userId: string | undefined;
-    client: WebSocket;
+    client: WebSocket | undefined;
     agent?: HttpsProxyAgent<string>;
     isConnected: boolean = false;
-    private messages: RawData[] = [];
-    private pingInterval: Timer | undefined;
+    autoReconnect: boolean = true;
+    private userAgent: string | undefined;
 
-    /**
+   /**
      * Client Class
      * @param pageID should be the trakteer page id (NOT Username). check pageID in https://trakteer.id/manage/my-page/settings
      * @param streamKey should be `trstream-xxx`. check key in https://trakteer.id/manage/stream-settings
@@ -57,15 +59,25 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
         super();
         this.username = pageID;
         this.streamKey = streamKey;
+        this.userAgent = userAgent;
+        this.reconnect();
 
         if (proxy) this.agent = new HttpsProxyAgent(proxy);
+    }
+
+    private reconnect() {
+        if (this.client) {
+            this.client.removeAllListeners();
+            this.client.terminate();
+        }
+
         this.client = new WebSocket(
             "wss://socket.trakteer.id/app/2ae25d102cc6cd41100a?protocol=7&client=js&version=5.1.1&flash=false",
             {
                 agent: this.agent,
                 headers: {
                     "User-Agent":
-                        userAgent ??
+                        this.userAgent ??
                         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
                 },
             },
@@ -80,6 +92,9 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
                     },
                 )
                 .then((data) => {
+
+                    if (!this.client) throw new Error("WebSocket client not initialized");
+
                     const userid: unknown = data.data;
 
                     // validasi userid
@@ -109,7 +124,9 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
                     );
 
                     // Kirim ping agar tidak di disconnect
-                    this.pingInterval = setInterval(() => {
+                    setInterval(() => {
+                        if (!this.client) return;
+                        this.emit("ping_sent", new Date());
                         this.client.send(
                             JSON.stringify({
                                 data: {},
@@ -136,22 +153,35 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
 
         this.client.on("message", (message) => {
             const msg = JSON.parse(message.toString()) as WSMessage;
-            if (
-                msg.event ===
-                "Illuminate\\Notifications\\Events\\BroadcastNotificationCreated"
-            ) {
-                const msgdata = JSON.parse(msg.data) as rawDonation & Donation;
-                msgdata.price_number = parseInt(
-                    msgdata.price.replace(/[^\d,]/gm, "").replace(",", "."),
-                );
-                this.emit("donation", msgdata);
+            switch (msg.event) {
+                case "Illuminate\\Notifications\\Events\\BroadcastNotificationCreated":
+                {
+                    if (typeof msg.data !== "string") return;
+                    const msgdata = JSON.parse(msg.data) as rawDonation & Donation;
+                    msgdata.price_number = parseInt(
+                        msgdata.price.replace(/[^\d,]/gm, "").replace(",", "."),
+                    );
+                    this.emit("donation", msgdata);
+                }
+                break;
+                case "pusher:pong": {
+                    this.emit("pong_received", new Date());
+                }
+                break;
+
             }
         });
 
         this.client.once("close", () => {
+            if (this.autoReconnect) {
+                setTimeout(() => {
+                    this.reconnect();
+                }, 5000);
+            }
             this.isConnected = false;
             this.emit("disconnect", new Date());
         });
+
     }
 
     /**
