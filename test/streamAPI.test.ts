@@ -3,12 +3,15 @@ import { describe, expect, test } from "bun:test";
 import { once } from "events";
 import { Donation } from "../src/interfaces";
 
-if (!process.env.PAGEID || !process.env.STREAM_APIKEY)
+if (!process.env.PAGEID || !process.env.STREAM_APIKEY || typeof process.env.PAGEID !== "string" || typeof process.env.STREAM_APIKEY !== "string")
   throw new Error("PAGEID or STREAM_APIKEY is not defined");
+
+if (!process.env.STREAM_APIKEY.startsWith("trstream-"))
+  throw new Error("STREAM_APIKEY is invalid, make sure to use the correct API key from trakteer.id");
 
 const client = new streamAPI(
   process.env.PAGEID,
-  process.env.STREAM_APIKEY as any
+  process.env.STREAM_APIKEY as "trstream-${string}"
 ); //Cek page id di : https://trakteer.id/manage/my-page/settings
 
 describe("should connect to stream", async () => {
