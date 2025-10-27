@@ -1,4 +1,5 @@
-import { Payment, User } from "../src" 
+import * as trakteer from "../src" 
+const { Payment, User } = trakteer;
 
 // Get all available payment methods
 
