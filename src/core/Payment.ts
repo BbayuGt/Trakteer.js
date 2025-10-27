@@ -321,5 +321,6 @@ export default class Payment {
             default:
                 throw new Error("Payment method not supported");
         }
+        throw new Error("Unhandled payment method");
     }
 }
