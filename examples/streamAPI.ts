@@ -1,4 +1,5 @@
-import trakteer, { streamKey } from "../src/index";
+import * as trakteer from "../src";
+import { streamKey } from "../src";
 
 if (!process.env.PAGEID || !process.env.STREAM_APIKEY)
   throw new Error("Please provide PAGEID and STREAM_APIKEY");

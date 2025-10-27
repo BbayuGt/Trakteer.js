@@ -1,6 +1,4 @@
-import Payment from "../src/core/Payment";
-import User from "../src/core/User";
-
+import { Payment, User } from "../src" 
 
 // Get all available payment methods
 

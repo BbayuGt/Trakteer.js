@@ -1,4 +1,4 @@
-import trakteer from "../src";
+import * as trakteer from "../src";
 
 if (!process.env.APIKEY) throw new Error("Please provide APIKEY");
 
