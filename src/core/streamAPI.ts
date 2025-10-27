@@ -197,6 +197,9 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
             },
         );
 
+        // They suddenly change sum type from number to string, changing it back to number
+        data.data.supporter.sum = parseInt(data.data.supporter.sum as unknown as string);
+
         return data.data;
     }
 
@@ -212,6 +215,12 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
                 httpsAgent: this.agent,
             },
         );
+
+        // They suddenly change quantity type from number to string, changing it back to number
+        data.data.latestTip.map(x => {
+            if (typeof x.quantity === "string") x.quantity = parseInt(x.quantity);
+            return x;
+        })
 
         return data.data;
     }
@@ -251,7 +260,7 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
      * @returns supporter list
      */
     async getSupporter(amount: number = 10): Promise<supporter[]> {
-        const data = (
+        let data = (
             await axios.get<any>(
                 `https://api.trakteer.id/v2/stream/${this.streamKey}/latest-tips?limit=${amount}`,
                 {
@@ -259,6 +268,12 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
                 },
             )
         ).data.latestTip as supporter[];
+
+        // They suddenly change quantity type from number to string, changing it back to number
+        data = data.map((x)=> {
+            if (typeof x.quantity === "string") x.quantity = parseInt(x.quantity);
+            return x;
+        })
 
         return data;
     }
