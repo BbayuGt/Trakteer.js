@@ -1,11 +1,12 @@
 import * as trakteer from "../src";
 import { streamKey } from "../src";
 
-if (!process.env.PAGEID || !process.env.STREAM_APIKEY)
+if (!process.env.PAGEID || !process.env.STREAM_APIKEY || !process.env.HASH)
   throw new Error("Please provide PAGEID and STREAM_APIKEY");
 const client = new trakteer.streamAPI(
   process.env.PAGEID,
-  process.env.STREAM_APIKEY as streamKey
+  process.env.STREAM_APIKEY as streamKey,
+  process.env.HASH
 );
 
 // check if connected
