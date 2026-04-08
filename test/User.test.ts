@@ -11,7 +11,6 @@ describe("Get User Info", () => {
 
 	test("Get user details", async () => {
 		const userId = "example";
-		if (userId instanceof Error) return;
 		const userDetails = await User.getUserDetails(userId);
 			if (userDetails instanceof Error) return;
 			expect(userDetails).toBeObject();
