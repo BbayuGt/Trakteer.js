@@ -14,7 +14,11 @@ if (!process.env.HASH || typeof process.env.HASH !== "string")
 
 const client = new streamAPI(
   process.env.PAGEID,
-  process.env.STREAM_APIKEY as "trstream-${string}"
+  process.env.STREAM_APIKEY as "trstream-${string}",
+  process.env.HASH,
+  undefined,
+  undefined,
+  true
 ); //Cek page id di : https://trakteer.id/manage/my-page/settings
 
 describe("should connect to stream", async () => {
