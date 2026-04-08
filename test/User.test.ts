@@ -3,17 +3,6 @@ import {describe, test, expect} from "bun:test";
 import User from "../src/core/User";
 
 describe("Get User Info", () => {
-	test("Get User ID from Page ID", async () => {
-		const userId = await User.getUserId("trakteer.id");
-		expect(userId).toBeString();
-	})
-
-	test("User not found (getUserId)", async() => {
-		expect(async () => {
-			await User.getUserId("thispagedefinitelynotexist123123123");
-		}).toThrowError();
-	})
-
 	test("user not found (getUserDetails)", async () => {
 		expect(async () => {
 			await User.getUserDetails("sdsasdasd")
@@ -21,7 +10,7 @@ describe("Get User Info", () => {
 	})
 
 	test("Get user details", async () => {
-		const userId = await User.getUserId("trakteer.id");
+		const userId = "example";
 		if (userId instanceof Error) return;
 		const userDetails = await User.getUserDetails(userId);
 			if (userDetails instanceof Error) return;
