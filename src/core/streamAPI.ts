@@ -40,28 +40,40 @@ export type streamKey = `trstream-${string}`;
 export class streamAPI extends EventEmitter implements streamAPIInterface {
     username: string;
     streamKey: streamKey;
-    userId: string | undefined;
     client: WebSocket | undefined;
     agent?: HttpsProxyAgent<string>;
     isConnected: boolean = false;
     autoReconnect: boolean = true;
+    hash: string;
+    testMode: boolean;
     private userAgent: string | undefined;
 
    /**
      * Client Class
      * @param pageID should be the trakteer page id (NOT Username). check pageID in https://trakteer.id/manage/my-page/settings
+     * @param hash should be the hash key in https://trakteer.id/manage/stream-settings/new-tip (check the URL)
      * @param streamKey should be `trstream-xxx`. check key in https://trakteer.id/manage/stream-settings
      */
     constructor(
         pageID: string,
         streamKey: `trstream-${string}`,
+        hash: string,
         proxy?: string,
         userAgent?: string,
+        testMode: boolean = false
     ) {
+        assert(typeof pageID === "string", "pageID should be a string");
+        assert(
+            typeof streamKey === "string" && streamKey.startsWith("trstream-"),
+            "streamKey should be a string and start with 'trstream-'",
+        );
+        assert(typeof hash === "string", "hash should be a string");
         super();
         this.username = pageID;
         this.streamKey = streamKey;
         this.userAgent = userAgent;
+        this.hash = hash;
+        this.testMode = testMode;
         this.reconnect();
 
         if (proxy) this.agent = new HttpsProxyAgent(proxy);
@@ -86,71 +98,46 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
         );
 
         this.client.once("open", () => {
-            axios
-                .get(
-                    `https://trakteer.id/${this.username}/stream?key=${this.streamKey}`,
-                    {
-                        httpsAgent: this.agent,
+            if (!this.client) throw new Error("WebSocket client not initialized");
+            //Subscribe ke Streaming agar mendapatkan feedback
+
+            this.client.send(
+                JSON.stringify({
+                    event: "pusher:subscribe",
+                    data: {
+                        auth: "",
+                        channel: `creator-stream.${this.hash}.${this.streamKey}`,
                     },
-                )
-                .then((data) => {
+                }),
+            );
 
-                    if (!this.client) throw new Error("WebSocket client not initialized");
+            // Kirim ping agar tidak di disconnect
+            setInterval(() => {
+                if (!this.client) return;
+                this.emit("ping_sent", new Date());
+                this.client.send(
+                    JSON.stringify({
+                        data: {},
+                        event: "pusher:ping",
+                    }),
+                );
+            }, 5000);
 
-                    const userid: unknown = data.data;
+            if (this.testMode) {
+                //Subscribe ke Streaming test agar mendapatkan feedback
+                this.client.send(
+                    JSON.stringify({
+                        event: "pusher:subscribe",
+                        data: {
+                            auth: "",
+                            channel: `creator-stream-test.${this.hash}.${this.streamKey}`,
+                        },
+                    }),
+                );
+            }
 
-                    // validasi userid
-                    if (typeof userid !== "string")
-                        throw new Error(
-                            "Failed to read userId data! Invalid key/username?",
-                        );
-
-                    const result = /creator-stream\.(.*?)\./gi.exec(userid);
-
-                    if (!data.data || !result || !result![1])
-                        throw new Error(
-                            "Failed to read userId data! Invalid key/username?",
-                        );
-                    else this.userId = result![1];
-
-                    //Subscribe ke Streaming agar mendapatkan feedback
-
-                    this.client.send(
-                        JSON.stringify({
-                            event: "pusher:subscribe",
-                            data: {
-                                auth: "",
-                                channel: `creator-stream.${this.userId}.${this.streamKey}`,
-                            },
-                        }),
-                    );
-
-                    // Kirim ping agar tidak di disconnect
-                    setInterval(() => {
-                        if (!this.client) return;
-                        this.emit("ping_sent", new Date());
-                        this.client.send(
-                            JSON.stringify({
-                                data: {},
-                                event: "pusher:ping",
-                            }),
-                        );
-                    }, 5000);
-
-                    //Subscribe ke Streaming test agar mendapatkan feedback
-                    this.client.send(
-                        JSON.stringify({
-                            event: "pusher:subscribe",
-                            data: {
-                                auth: "",
-                                channel: `creator-stream-test.${this.userId}.${this.streamKey}`,
-                            },
-                        }),
-                    );
-
-                    this.isConnected = true;
-                    this.emit("connect", new Date());
-                });
+            this.isConnected = true;
+            this.emit("connect", new Date());
         });
 
         this.client.on("message", (message) => {
