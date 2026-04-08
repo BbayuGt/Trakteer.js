@@ -98,6 +98,27 @@ export interface supporter {
  */
 export interface rawDonation {
     /**
+     * tip id
+     */
+    tip_id: string;
+
+    /**
+     * created_at
+     * @format "DD/MM/YY HH:mm"
+     */
+    created_at: string;
+
+    /**
+     * order id
+     */
+    order_id: string;
+
+    /**
+     * Creator name
+     */
+    creator_name: string;
+
+    /**
      * Donation Id
      */
     id: string;
@@ -116,7 +137,13 @@ export interface rawDonation {
     /**
      * Quantity of donation (in item)
      */
-    quantity: number;
+    quantity: string;
+
+    /**
+     * paid at
+     * @format "YYYY-MM-DD HH:mm:ss"
+     */
+    paid_at: string;
 
     /**
      * Supporter avatar
