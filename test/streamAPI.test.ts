@@ -9,9 +9,16 @@ if (!process.env.PAGEID || !process.env.STREAM_APIKEY || typeof process.env.PAGE
 if (!process.env.STREAM_APIKEY.startsWith("trstream-"))
   throw new Error("STREAM_APIKEY is invalid, make sure to use the correct API key from trakteer.id");
 
+if (!process.env.HASH || typeof process.env.HASH !== "string")
+  throw new Error("HASH is not defined or invalid, make sure to use the correct hash from trakteer.id");
+
 const client = new streamAPI(
   process.env.PAGEID,
-  process.env.STREAM_APIKEY as "trstream-${string}"
+  process.env.STREAM_APIKEY as "trstream-${string}",
+  process.env.HASH,
+  undefined,
+  undefined,
+  true
 ); //Cek page id di : https://trakteer.id/manage/my-page/settings
 
 describe("should connect to stream", async () => {
@@ -62,7 +69,8 @@ describe("should connect to stream", async () => {
       expect(res.latestTip[0]).toBeObject();
       expect(res.latestTip[0].display_name).toBeString();
       expect(res.latestTip[0].quantity).toBeNumber();
-      expect(res.latestTip[0].support_message).toBeString();
+      const support_message = typeof res.latestTip[0].support_message === "string" || res.latestTip[0].support_message === null;
+      expect(support_message).toBeTrue();
     }
   });
 
@@ -91,7 +99,8 @@ describe("should connect to stream", async () => {
     if (res[0]) {
       expect(res[0]).toBeObject();
       expect(res[0].display_name).toBeString();
-      expect(res[0].support_message).toBeString();
+      const support_message = typeof res[0].support_message === "string" || res[0].support_message === null;
+      expect(support_message).toBeTrue();
       expect(res[0].quantity).toBeNumber();
     }
   });

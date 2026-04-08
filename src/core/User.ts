@@ -7,6 +7,7 @@ export default class User {
      * Mendapatkan ID user dari page id
      * @param pageId Page id
      * @returns ID user
+     * @deprecated Metode ini telah di patch oleh Trakteer, cari manual!
      */
     static async getUserId(pageId: string): Promise<string | Error> {
         const cache = Cache.get<string>(`userId_${pageId}`);
