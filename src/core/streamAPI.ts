@@ -1,6 +1,6 @@
 import axios from "axios";
 import { HttpsProxyAgent } from "https-proxy-agent";
-import { EventEmitter, RawData, WebSocket } from "ws";
+import { RawData, WebSocket } from "ws";
 import {
     Donation,
     Goal,
@@ -10,6 +10,8 @@ import {
     rawDonation,
     supporter,
 } from "../interfaces";
+import EventEmitter from "events";
+import assert from "assert";
 
 interface ClientEvents {
     donation: (message: Donation) => void;
