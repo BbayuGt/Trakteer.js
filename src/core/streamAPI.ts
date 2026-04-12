@@ -47,6 +47,7 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
     hash: string;
     testMode: boolean;
     private userAgent: string | undefined;
+    private pingInterval: NodeJS.Timeout | undefined;
 
    /**
      * Client Class
@@ -80,6 +81,12 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
     }
 
     private reconnect() {
+
+        if (this.pingInterval) {
+            clearInterval(this.pingInterval);
+            this.pingInterval = undefined;
+        }
+
         if (this.client) {
             this.client.removeAllListeners();
             this.client.terminate();
