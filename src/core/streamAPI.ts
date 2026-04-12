@@ -106,20 +106,9 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
 
         this.client.once("open", () => {
             if (!this.client) throw new Error("WebSocket client not initialized");
-            //Subscribe ke Streaming agar mendapatkan feedback
-
-            this.client.send(
-                JSON.stringify({
-                    event: "pusher:subscribe",
-                    data: {
-                        auth: "",
-                        channel: `creator-stream.${this.hash}.${this.streamKey}`,
-                    },
-                }),
-            );
 
             // Kirim ping agar tidak di disconnect
-            setInterval(() => {
+            this.pingInterval = setInterval(() => {
                 if (!this.client) return;
                 this.emit("ping_sent", new Date());
                 this.client.send(
@@ -128,20 +117,7 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
                         event: "pusher:ping",
                     }),
                 );
-            }, 5000);
-
-            if (this.testMode) {
-                //Subscribe ke Streaming test agar mendapatkan feedback
-                this.client.send(
-                    JSON.stringify({
-                        event: "pusher:subscribe",
-                        data: {
-                            auth: "",
-                            channel: `creator-stream-test.${this.hash}.${this.streamKey}`,
-                        },
-                    }),
-                );
-            }
+            }, 30000);
 
             this.isConnected = true;
             this.emit("connect", new Date());
@@ -150,6 +126,34 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
         this.client.on("message", (message) => {
             const msg = JSON.parse(message.toString()) as WSMessage;
             switch (msg.event) {
+                case "pusher:connection_established":
+                {
+                    if (!this.client) throw new Error("WebSocket client not initialized");
+                    // subscribe
+                    this.client.send(
+                        JSON.stringify({
+                            event: "pusher:subscribe",
+                            data: {
+                                auth: "",
+                                channel: `creator-stream.${this.hash}.${this.streamKey}`,
+                            },
+                        }),
+                    );
+
+                    if (this.testMode) {
+                        //Subscribe ke Streaming test agar mendapatkan feedback
+                        this.client.send(
+                            JSON.stringify({
+                                event: "pusher:subscribe",
+                                data: {
+                                    auth: "",
+                                    channel: `creator-stream-test.${this.hash}.${this.streamKey}`,
+                                },
+                            }),
+                        );
+                    }
+
+                } break;
                 case "Illuminate\\Notifications\\Events\\BroadcastNotificationCreated":
                 {
                     if (typeof msg.data !== "string") return;
