@@ -129,6 +129,30 @@ export class streamAPI extends EventEmitter implements streamAPIInterface {
                 case "pusher:connection_established":
                 {
                     if (!this.client) throw new Error("WebSocket client not initialized");
+
+                    // Unsubscribe dari channel yang mungkin masih subscribe karena reconnect
+                    this.client.send(
+                        JSON.stringify({
+                            event: "pusher:unsubscribe",
+                            data: {
+                                channel: `creator-stream.${this.hash}.${this.streamKey}`,
+                            },
+                        }),
+                    );
+
+                    if (this.testMode) {
+                        //Subscribe ke Streaming test agar mendapatkan feedback
+                        this.client.send(
+                            JSON.stringify({
+                                event: "pusher:unsubscribe",
+                                data: {
+                                    channel: `creator-stream-test.${this.hash}.${this.streamKey}`,
+                                },
+                            }),
+                        );
+                    }
+
+
                     // subscribe
                     this.client.send(
                         JSON.stringify({
